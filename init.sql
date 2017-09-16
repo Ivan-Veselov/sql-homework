@@ -1,27 +1,26 @@
 -- TODO: default values - think about it
 
-CREATE TYPE colour AS ENUM ('gold', 'silver', 'bronze');
+CREATE TYPE medal_colour AS ENUM ('gold', 'silver', 'bronze');
 CREATE TYPE sex AS ENUM ('male', 'female');
 
 CREATE TABLE vehicles (
     id          serial        PRIMARY KEY,
-    reg_number  text          NOT NULL,
-    capacity    integer       CHECK (capacity BETWEEN 1 AND 500) NOT NULL
+    reg_number  text          NOT NULL UNIQUE,
+    capacity    integer       CHECK (capacity > 1) NOT NULL
 );
 
 CREATE TABLE assignments (
-    id           serial   PRIMARY KEY,
-    date         date     NOT NULL,
-    time         time     NOT NULL,
-    description  text     NOT NULL,
-    vehicle_id   integer  REFERENCES vehicles (id) 
+    id           serial     PRIMARY KEY,
+    timestamp    timestamp  NOT NULL,
+    description  text       NOT NULL,
+    vehicle_id   integer    REFERENCES vehicles (id) NULL
 );
 
 CREATE TABLE volunteers (
     id                serial   PRIMARY KEY,
     name              text     NOT NULL,
     telephone_number  text     NOT NULL,
-    card_number       integer  NOT NULL 
+    card_number       integer  NOT NULL UNIQUE 
 );
 
 CREATE TABLE buildings (
@@ -29,7 +28,7 @@ CREATE TABLE buildings (
     street        text     NOT NULL,
     house_number  integer  NOT NULL,
     type          text     NOT NULL,
-    name          text 
+    name          text     NULL 
 );
 
 CREATE TABLE delegations (
@@ -48,22 +47,21 @@ CREATE TABLE athletes (
     id               serial   PRIMARY KEY,
     name             text     NOT NULL,
     sex              sex      NOT NULL,
-    height           integer  CHECK (height BETWEEN 50 AND 300) NOT NULL,
-    weight           integer  CHECK (weight BETWEEN 10 AND 650) NOT NULL,
-    age              integer  CHECK (age BETWEEN 2 AND 130) NOT NULL, 
+    height           integer  CHECK (height > 0) NOT NULL,
+    weight           integer  CHECK (weight > 0) NOT NULL,
+    age              integer  CHECK (age > 0) NOT NULL, 
     accomodation_id  integer  REFERENCES buildings (id) NOT NULL,
-    card_number      integer  NOT NULL,
+    card_number      integer  NOT NULL UNIQUE,
     delegation_id    integer  REFERENCES delegations (id) NOT NULL,
     volunteer_id     integer  REFERENCES volunteers (id) NOT NULL
 );
 
 CREATE TABLE competitions (
-	id           serial   PRIMARY KEY,
-	sport        text     NOT NULL,
-    date         date     NOT NULL,
-    time         time     NOT NULL,
-    description  text     NOT NULL,
-    site_id      integer  REFERENCES buildings (id) NOT NULL
+    id           serial     PRIMARY KEY,
+    sport        text       NOT NULL,
+    timestamp    timestamp  NOT NULL,
+    description  text       NOT NULL,
+    site_id      integer    REFERENCES buildings (id) NOT NULL
 );
 
 CREATE TABLE participations (
@@ -72,9 +70,9 @@ CREATE TABLE participations (
 );
 
 CREATE TABLE medals (    
-    athlete_id      integer  REFERENCES athletes (id) NOT NULL,
-    competition_id  integer  REFERENCES competitions (id) NOT NULL,
-    colour          colour   NOT NULL
+    athlete_id      integer       REFERENCES athletes (id) NOT NULL,
+    competition_id  integer       REFERENCES competitions (id) NOT NULL,
+    colour          medal_colour  NOT NULL
 );
 
 CREATE TABLE athletes_specializations (
