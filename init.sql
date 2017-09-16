@@ -38,7 +38,7 @@ CREATE TABLE delegations (
     headquarters_id  integer  REFERENCES buildings (id) NOT NULL
 );
 
-CREATE TABLE delegationLeaders (
+CREATE TABLE delegation_leaders (
     name              text     NOT NULL,
     telephone_number  text     NOT NULL,
     delegation_id     integer  REFERENCES delegations (id) NOT NULL
@@ -77,17 +77,17 @@ CREATE TABLE medals (
     colour          colour   NOT NULL
 );
 
-CREATE TABLE athletesSpecializations (
+CREATE TABLE athletes_specializations (
     athlete_id  integer  REFERENCES athletes (id) NOT NULL,
     sport       text     NOT NULL
 );
 
-CREATE TABLE buildingSpecializations (
+CREATE TABLE building_specializations (
     building_id  integer  REFERENCES buildings (id) NOT NULL,
     sport        text     NOT NULL
 );
 
-CREATE TABLE volunteersAssignments (
+CREATE TABLE volunteers_assignments (
     volunteer_id   integer  REFERENCES volunteers (id) NOT NULL,
     assignment_id  integer  REFERENCES assignments (id) NOT NULL
 );
