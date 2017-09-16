@@ -6,7 +6,7 @@ CREATE TYPE sex AS ENUM ('male', 'female');
 CREATE TABLE vehicles (
     id          serial        PRIMARY KEY,
     reg_number  text          NOT NULL UNIQUE,
-    capacity    integer       CHECK (capacity > 1) NOT NULL
+    capacity    integer       CHECK (capacity > 0) NOT NULL
 );
 
 CREATE TABLE assignments (
