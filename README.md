@@ -11,3 +11,7 @@
 ## Инструкция по работе с репозиторием:
 
 Чтобы вся команда могла видеть изменения и комментировать их, в ветку master необходимо делать [pull-request](https://help.github.com/articles/about-pull-requests/). В pull-request необходимо запросить [review](https://help.github.com/articles/requesting-a-pull-request-review/) всех остальных членов команды. После того, как вся команда одобрила pull-request, его можно сливать в ветку master.
+
+## diagram.xml
+
+В файле diagram.xml находится диаграмма таблиц базы данных. Этот файл можно открыть с помощью онлайн сервиса [draw.io](https://www.draw.io/).
