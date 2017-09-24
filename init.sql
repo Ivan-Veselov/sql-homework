@@ -1,6 +1,5 @@
 -- TODO: default values - think about it
 
-CREATE TYPE MEDAL_COLOUR AS ENUM ('gold', 'silver', 'bronze');
 CREATE TYPE SEX AS ENUM ('male', 'female');
 
 CREATE TABLE vehicles (
@@ -66,13 +65,8 @@ CREATE TABLE competitions (
 
 CREATE TABLE participations (
     competition_id  INTEGER  REFERENCES competitions NOT NULL,
-    athlete_id      INTEGER  REFERENCES athletes NOT NULL
-);
-
-CREATE TABLE medals (    
-    athlete_id      INTEGER       REFERENCES athletes NOT NULL,
-    competition_id  INTEGER       REFERENCES competitions NOT NULL,
-    colour          MEDAL_COLOUR  NOT NULL
+    athlete_id      INTEGER  REFERENCES athletes NOT NULL,
+    position        INTEGER  CHECK (position > 0) NULL
 );
 
 CREATE TABLE athletes_specializations (
