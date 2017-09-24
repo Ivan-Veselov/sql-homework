@@ -55,9 +55,14 @@ CREATE TABLE athletes (
     volunteer_id     INTEGER  REFERENCES volunteers NOT NULL
 );
 
+CREATE TABLE sports (
+    id    SERIAL  PRIMARY KEY,
+    name  TEXT    NOT NULL UNIQUE
+);
+
 CREATE TABLE competitions (
     id           SERIAL     PRIMARY KEY,
-    sport        TEXT       NOT NULL,
+    sport_id     INTEGER    REFERENCES sports NOT NULL,
     timestamp    TIMESTAMP  NOT NULL,
     description  TEXT       NOT NULL,
     site_id      INTEGER    REFERENCES buildings NOT NULL
@@ -71,12 +76,12 @@ CREATE TABLE participations (
 
 CREATE TABLE athletes_specializations (
     athlete_id  INTEGER  REFERENCES athletes NOT NULL,
-    sport       TEXT     NOT NULL
+    sport_id    INTEGER  REFERENCES sports NOT NULL
 );
 
 CREATE TABLE building_specializations (
     building_id  INTEGER  REFERENCES buildings NOT NULL,
-    sport        TEXT     NOT NULL
+    sport_id     INTEGER  REFERENCES sports NOT NULL
 );
 
 CREATE TABLE volunteers_assignments (
