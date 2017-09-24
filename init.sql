@@ -13,7 +13,7 @@ CREATE TABLE assignments (
     id           SERIAL     PRIMARY KEY,
     timestamp    TIMESTAMP  NOT NULL,
     description  TEXT       NOT NULL,
-    vehicle_id   INTEGER    REFERENCES vehicles (id) NULL
+    vehicle_id   INTEGER    REFERENCES vehicles NULL
 );
 
 CREATE TABLE volunteers (
@@ -34,13 +34,13 @@ CREATE TABLE buildings (
 CREATE TABLE delegations (
     id               SERIAL   PRIMARY KEY,
     country          TEXT     NOT NULL,
-    headquarters_id  INTEGER  REFERENCES buildings (id) NOT NULL
+    headquarters_id  INTEGER  REFERENCES buildings NOT NULL
 );
 
 CREATE TABLE delegation_leaders (
     name              TEXT     NOT NULL,
     telephone_number  TEXT     NOT NULL,
-    delegation_id     INTEGER  REFERENCES delegations (id) NOT NULL
+    delegation_id     INTEGER  REFERENCES delegations NOT NULL
 );
 
 CREATE TABLE athletes (
@@ -50,10 +50,10 @@ CREATE TABLE athletes (
     height           INTEGER  CHECK (height > 0) NOT NULL,
     weight           INTEGER  CHECK (weight > 0) NOT NULL,
     age              INTEGER  CHECK (age > 0) NOT NULL, 
-    accomodation_id  INTEGER  REFERENCES buildings (id) NOT NULL,
+    accomodation_id  INTEGER  REFERENCES buildings NOT NULL,
     card_number      INTEGER  NOT NULL UNIQUE,
-    delegation_id    INTEGER  REFERENCES delegations (id) NOT NULL,
-    volunteer_id     INTEGER  REFERENCES volunteers (id) NOT NULL
+    delegation_id    INTEGER  REFERENCES delegations NOT NULL,
+    volunteer_id     INTEGER  REFERENCES volunteers NOT NULL
 );
 
 CREATE TABLE competitions (
@@ -61,31 +61,31 @@ CREATE TABLE competitions (
     sport        TEXT       NOT NULL,
     timestamp    TIMESTAMP  NOT NULL,
     description  TEXT       NOT NULL,
-    site_id      INTEGER    REFERENCES buildings (id) NOT NULL
+    site_id      INTEGER    REFERENCES buildings NOT NULL
 );
 
 CREATE TABLE participations (
-    competition_id  INTEGER  REFERENCES competitions (id) NOT NULL,
-    athlete_id      INTEGER  REFERENCES athletes (id) NOT NULL
+    competition_id  INTEGER  REFERENCES competitions NOT NULL,
+    athlete_id      INTEGER  REFERENCES athletes NOT NULL
 );
 
 CREATE TABLE medals (    
-    athlete_id      INTEGER       REFERENCES athletes (id) NOT NULL,
-    competition_id  INTEGER       REFERENCES competitions (id) NOT NULL,
+    athlete_id      INTEGER       REFERENCES athletes NOT NULL,
+    competition_id  INTEGER       REFERENCES competitions NOT NULL,
     colour          MEDAL_COLOUR  NOT NULL
 );
 
 CREATE TABLE athletes_specializations (
-    athlete_id  INTEGER  REFERENCES athletes (id) NOT NULL,
+    athlete_id  INTEGER  REFERENCES athletes NOT NULL,
     sport       TEXT     NOT NULL
 );
 
 CREATE TABLE building_specializations (
-    building_id  INTEGER  REFERENCES buildings (id) NOT NULL,
+    building_id  INTEGER  REFERENCES buildings NOT NULL,
     sport        TEXT     NOT NULL
 );
 
 CREATE TABLE volunteers_assignments (
-    volunteer_id   INTEGER  REFERENCES volunteers (id) NOT NULL,
-    assignment_id  INTEGER  REFERENCES assignments (id) NOT NULL
+    volunteer_id   INTEGER  REFERENCES volunteers NOT NULL,
+    assignment_id  INTEGER  REFERENCES assignments NOT NULL
 );
