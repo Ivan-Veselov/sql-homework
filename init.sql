@@ -71,7 +71,10 @@ CREATE TABLE competitions (
 CREATE TABLE participations (
     competition_id  INTEGER  REFERENCES competitions NOT NULL,
     athlete_id      INTEGER  REFERENCES athletes NOT NULL,
-    position        INTEGER  CHECK (position > 0) NULL
+    position        INTEGER  CHECK (position > 0) NULL,
+    
+    UNIQUE (competition_id, athlete_id),
+    UNIQUE (competition_id, position)
 );
 
 CREATE TABLE athletes_specializations (
