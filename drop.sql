@@ -1,16 +1,16 @@
-DROP TABLE vehicles,
-           assignments,
-           volunteers,
-           buildings,
-           delegations,
-           delegation_leaders,
-           athletes,
-           competitions,
-           participations,
-           medals,
-           athletes_specializations,
-           building_specializations,
-           volunteers_assignments;
+DROP TABLE IF EXISTS vehicles,
+                     assignments,
+                     volunteers,
+                     buildings,
+                     delegations,
+                     delegation_leaders,
+                     athletes,
+                     sports,
+                     competitions,
+                     participations,
+                     athletes_specializations,
+                     building_specializations,
+                     volunteers_assignments;
            
-DROP TYPE MEDAL_COLOUR, SEX;
+DROP TYPE SEX;
 
