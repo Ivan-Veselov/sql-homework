@@ -3,9 +3,9 @@
 CREATE TYPE SEX AS ENUM ('male', 'female');
 
 CREATE TABLE vehicles (
-    id          SERIAL        PRIMARY KEY,
-    reg_number  TEXT          NOT NULL UNIQUE,
-    capacity    INTEGER       CHECK (capacity > 0) NOT NULL
+    id          SERIAL   PRIMARY KEY,
+    reg_number  TEXT     NOT NULL UNIQUE,
+    capacity    INTEGER  CHECK (capacity > 0) NOT NULL
 );
 
 CREATE TABLE assignments (
@@ -23,8 +23,8 @@ CREATE TABLE volunteers (
 );
 
 CREATE TABLE building_types (
-    id            SERIAL   PRIMARY KEY,
-    type          TEXT     NOT NULL UNIQUE
+    id    SERIAL  PRIMARY KEY,
+    type  TEXT    NOT NULL UNIQUE
 );
 
 CREATE TABLE buildings (
@@ -36,8 +36,8 @@ CREATE TABLE buildings (
 );
 
 CREATE TABLE countries (
-    id            SERIAL   PRIMARY KEY,
-    name          TEXT     NOT NULL UNIQUE
+    id    SERIAL  PRIMARY KEY,
+    name  TEXT    NOT NULL UNIQUE
 );
 
 CREATE TABLE delegations (
