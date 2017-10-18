@@ -22,17 +22,27 @@ CREATE TABLE volunteers (
     card_number       INTEGER  NOT NULL UNIQUE 
 );
 
+CREATE TABLE building_types (
+    id            SERIAL   PRIMARY KEY,
+    type          TEXT     NOT NULL UNIQUE
+);
+
 CREATE TABLE buildings (
     id            SERIAL   PRIMARY KEY,
     street        TEXT     NOT NULL,
     house_number  INTEGER  NOT NULL,
-    type          TEXT     NOT NULL,
+    type_id       INTEGER  REFERENCES building_types NOT NULL,
     name          TEXT     NULL 
+);
+
+CREATE TABLE countries (
+    id            SERIAL   PRIMARY KEY,
+    name          TEXT     NOT NULL UNIQUE
 );
 
 CREATE TABLE delegations (
     id               SERIAL   PRIMARY KEY,
-    country          TEXT     NOT NULL,
+    country_id       INTEGER  REFERENCES countries NOT NULL,
     headquarters_id  INTEGER  REFERENCES buildings NOT NULL
 );
 
