@@ -49,10 +49,10 @@ CREATE TABLE athletes (
     height           INTEGER  CHECK (height > 0) NOT NULL,
     weight           INTEGER  CHECK (weight > 0) NOT NULL,
     age              INTEGER  CHECK (age > 0) NOT NULL, 
-    accomodation_id  INTEGER  REFERENCES buildings NOT NULL,
+    accomodation_id  INTEGER  REFERENCES buildings NULL,
     card_number      INTEGER  NOT NULL UNIQUE,
     delegation_id    INTEGER  REFERENCES delegations NOT NULL,
-    volunteer_id     INTEGER  REFERENCES volunteers NOT NULL
+    volunteer_id     INTEGER  REFERENCES volunteers NULL
 );
 
 CREATE TABLE sports (
