@@ -2,6 +2,8 @@
 
 CREATE TYPE SEX AS ENUM ('male', 'female');
 
+CREATE SEQUENCE card_number_sequence;
+
 CREATE TABLE vehicles (
     id          SERIAL   PRIMARY KEY,
     reg_number  TEXT     NOT NULL UNIQUE,
@@ -19,7 +21,7 @@ CREATE TABLE volunteers (
     id                SERIAL   PRIMARY KEY,
     name              TEXT     NOT NULL,
     telephone_number  TEXT     NOT NULL,
-    card_number       INTEGER  NOT NULL UNIQUE 
+    card_number       INTEGER  NOT NULL UNIQUE DEFAULT nextval('card_number_sequence')
 );
 
 CREATE TABLE building_types (
@@ -60,7 +62,7 @@ CREATE TABLE athletes (
     weight           INTEGER  CHECK (weight > 0) NOT NULL,
     age              INTEGER  CHECK (age > 0) NOT NULL, 
     accomodation_id  INTEGER  REFERENCES buildings NULL,
-    card_number      INTEGER  NOT NULL UNIQUE,
+    card_number      INTEGER  NOT NULL UNIQUE DEFAULT nextval('card_number_sequence'),
     delegation_id    INTEGER  REFERENCES delegations NOT NULL,
     volunteer_id     INTEGER  REFERENCES volunteers NULL
 );
