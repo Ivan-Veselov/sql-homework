@@ -51,10 +51,15 @@ WITH PossibleHQ AS (
     buildings B JOIN building_types T ON B.type_id = T.id
   WHERE T.type = 'Hotel' OR T.type = 'Office'
   ORDER BY random()
+), TT AS (
+  SELECT countries.id AS id, (0.5 + random() * (SELECT COUNT(*) FROM PossibleHQ))::INT phq_id
+  FROM countries
 )
 INSERT INTO delegations(country_id, headquarters_id)
-  SELECT C.id, b_id
-  FROM countries C JOIN PossibleHQ P ON C.id = P.id;
+  SELECT C.id, b_id::INT
+  FROM countries C
+    JOIN TT ON (TT.id = C.id)
+    JOIN PossibleHQ P ON (P.id = phq_id);
 
 -- delegations_leaders
 WITH Names AS (
