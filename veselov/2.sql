@@ -8,5 +8,5 @@ SELECT Countries.name
     JOIN Delegations     ON Delegations.id = Athletes.delegation_id
     JOIN Countries       ON Countries.id = Delegations.country_id
 WHERE Participations.place = 1
-ORDER BY name;
+ORDER BY name ASC;
 
