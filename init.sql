@@ -2,10 +2,12 @@
 
 CREATE TYPE SEX AS ENUM ('male', 'female');
 
+CREATE SEQUENCE card_number_sequence;
+
 CREATE TABLE vehicles (
-    id          SERIAL        PRIMARY KEY,
-    reg_number  TEXT          NOT NULL UNIQUE,
-    capacity    INTEGER       CHECK (capacity > 0) NOT NULL
+    id          SERIAL   PRIMARY KEY,
+    reg_number  TEXT     NOT NULL UNIQUE,
+    capacity    INTEGER  CHECK (capacity > 0) NOT NULL
 );
 
 CREATE TABLE assignments (
@@ -19,20 +21,30 @@ CREATE TABLE volunteers (
     id                SERIAL   PRIMARY KEY,
     name              TEXT     NOT NULL,
     telephone_number  TEXT     NOT NULL,
-    card_number       INTEGER  NOT NULL UNIQUE 
+    card_number       INTEGER  NOT NULL UNIQUE DEFAULT nextval('card_number_sequence')
+);
+
+CREATE TABLE building_types (
+    id    SERIAL  PRIMARY KEY,
+    type  TEXT    NOT NULL UNIQUE
 );
 
 CREATE TABLE buildings (
     id            SERIAL   PRIMARY KEY,
     street        TEXT     NOT NULL,
     house_number  INTEGER  NOT NULL,
-    type          TEXT     NOT NULL,
+    type_id       INTEGER  REFERENCES building_types NOT NULL,
     name          TEXT     NULL 
+);
+
+CREATE TABLE countries (
+    id    SERIAL  PRIMARY KEY,
+    name  TEXT    NOT NULL UNIQUE
 );
 
 CREATE TABLE delegations (
     id               SERIAL   PRIMARY KEY,
-    country          TEXT     NOT NULL,
+    country_id       INTEGER  REFERENCES countries NOT NULL,
     headquarters_id  INTEGER  REFERENCES buildings NOT NULL
 );
 
@@ -49,10 +61,10 @@ CREATE TABLE athletes (
     height           INTEGER  CHECK (height > 0) NOT NULL,
     weight           INTEGER  CHECK (weight > 0) NOT NULL,
     age              INTEGER  CHECK (age > 0) NOT NULL, 
-    accomodation_id  INTEGER  REFERENCES buildings NOT NULL,
-    card_number      INTEGER  NOT NULL UNIQUE,
+    accomodation_id  INTEGER  REFERENCES buildings NULL,
+    card_number      INTEGER  NOT NULL UNIQUE DEFAULT nextval('card_number_sequence'),
     delegation_id    INTEGER  REFERENCES delegations NOT NULL,
-    volunteer_id     INTEGER  REFERENCES volunteers NOT NULL
+    volunteer_id     INTEGER  REFERENCES volunteers NULL
 );
 
 CREATE TABLE sports (
