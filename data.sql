@@ -88,7 +88,7 @@ INSERT INTO competitions(sport_id, timestamp, description, site_id)
     timestamp '2017-06-01 10:00:00' +
       random() * (timestamp '2017-08-30 21:00:00' - timestamp '2017-06-01 10:00:00'),
     description,
-    (0.5 + random() * (SELECT COUNT(*) FROM building_types))::INT -- todo: not office nor hostel
+    (0.5 + random() * (SELECT COUNT(*) FROM buildings))::INT -- todo: not office nor hostel
   FROM Descriptions;
 
 -- vehicles
