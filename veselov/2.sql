@@ -1,12 +1,12 @@
-SELECT Countries.name
-    FROM Delegations
-    JOIN Countries    ON Countries.id = Delegations.country_id
+SELECT countries.name
+    FROM delegations
+    JOIN countries    ON countries.id = delegations.country_id
 EXCEPT
-SELECT Countries.name
-    FROM Participations
-    JOIN Athletes        ON Athletes.id = Participations.athlete_id
-    JOIN Delegations     ON Delegations.id = Athletes.delegation_id
-    JOIN Countries       ON Countries.id = Delegations.country_id
-WHERE Participations.place = 1
+SELECT countries.name
+    FROM participations
+    JOIN athletes        ON athletes.id = participations.athlete_id
+    JOIN delegations     ON delegations.id = athletes.delegation_id
+    JOIN countries       ON countries.id = delegations.country_id
+WHERE participations.place = 1
 ORDER BY name ASC;
 
