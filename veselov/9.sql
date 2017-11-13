@@ -1,7 +1,7 @@
 WITH athletes_for_volunteer AS (
     SELECT COUNT(1) AS athletes_number
         FROM volunteers
-        JOIN athletes ON athletes.volunteer_id = volunteers.id
+        JOIN athletes    ON  athletes.volunteer_id = volunteers.id
     GROUP BY volunteers.id
 ),
 athletes_for_volunteer_indexed AS (
