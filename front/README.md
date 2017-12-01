@@ -3,7 +3,7 @@
 ## How to build
 
 npm manager is required.
-See [get npm link](https://daringfireball.net/projects/markdown/basics)https://docs.npmjs.com/getting-started/installing-node).
+See [get npm link](https://docs.npmjs.com/getting-started/installing-node).
 
 After npm install simply run:
 
