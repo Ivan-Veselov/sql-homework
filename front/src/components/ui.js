@@ -79,7 +79,7 @@ class UI extends React.Component {
     };
 
     renderQueryContent = () => {
-        if (isContentRendered) {
+        if (this.state.isContentRendered) {
             return (
                 <SpecifiedList 
                     data={this.state.table_body}
@@ -95,6 +95,7 @@ class UI extends React.Component {
     render() {
         const { activeItem } = this.state
 
+        // TODO: make clicked/unclicked menu items
         return (
             <div style={center}>
                 <h1> Olympiad website! </h1>
@@ -104,14 +105,14 @@ class UI extends React.Component {
                       name='all_sportmen'
                       active={activeItem === 'all_sportsmen'}
                       content='Список всех спортсменов'
-                      onClick={this.handleItemClick}
+                      onClick={this.handleItemClick.bind(this)}
                     />
 
                     <Menu.Item
                       name='all_accomodations'
                       active={activeItem === 'all_accomodations'}
                       content='Список всех помещений'
-                      onClick={this.handleItemClick}
+                      onClick={this.handleItemClick.bind(this)}
                     />
                 </Menu>
 
