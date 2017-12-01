@@ -1,3 +1,4 @@
+import React from 'react';
 import { Table } from 'semantic-ui-react'
 
 class SpecifiedList extends React.Component {
@@ -6,7 +7,8 @@ class SpecifiedList extends React.Component {
 
         this.state = {
             data: this.props.data,
-            columns: this.props.columns
+            columns: this.props.columns,
+            click_handler: this.props.handler
         }
     }
 

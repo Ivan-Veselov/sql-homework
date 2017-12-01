@@ -65,6 +65,18 @@ class UI extends React.Component {
         };
     };
 
+    sendSportsmanGetQuery = (sportsman_id) => {
+        let query_name = "/sportsman/get";
+        let params = "id=" + sportsman_id;
+
+        data_handler = (response) => {
+            this.state = {
+                isContentRendered: true
+                // do I want to identify type of content and render it properly?
+            };
+        };
+    }
+
     sendQuery = (query_name, params, data_handler) => {
         let requestUrl = encodeURI("http://localhost:1234/" + query_name + "/" + params);
         $.ajax({
