@@ -7,7 +7,7 @@ import UI from './components/ui.js';
 
 injectTapEventPlugin();
 const App = () => (
-	<BodyBackgroundColor backgroundColor='#F0F8FF'>
+	<BodyBackgroundColor backgroundColor='#FAEBD7'>
 	    <MuiThemeProvider>
 	        <UI />
 	    </MuiThemeProvider>
