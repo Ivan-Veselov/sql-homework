@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import BodyBackgroundColor from 'react-body-backgroundcolor';
+import UI from './components/ui.js';
 
 injectTapEventPlugin();
 const App = () => (
 	<BodyBackgroundColor backgroundColor='#F0F8FF'>
 	    <MuiThemeProvider>
-	        <div> "Hello world!" </div>
+	        <UI />
 	    </MuiThemeProvider>
     </BodyBackgroundColor>
 );
