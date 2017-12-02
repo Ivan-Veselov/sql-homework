@@ -1,8 +1,10 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react'
 import SpecifiedList from './list-view.js';
-var queries = require('../queries.js');
-var content_type = require('../content_type.js');
+import $ from "jquery";
+let query = require('../query');
+let content_type = require('../content_type');
+let port = 1234;
 
 /**
     Center align
@@ -65,14 +67,30 @@ class UI extends React.Component {
 
         switch (name) {
             case 'all_sportsmen':
-                queries.sendAllSportsmenQuery(this.handleAllSportsmen.bind(this))
+                this.sendQuery(query.ALL_SPORTSMEN, "", 
+                                this.handleAllSportsmen.bind(this));
 
             case 'all_accomodations':
-                queries.sendAllAccomodationsQuery(this.handleAllAccomodations.bind(this))
+                this.sendQuery(query.ALL_ACCOMODATIONS, "", 
+                                this.handleAllAccomodations.bind(this));
 
             case 'all_volunteers':
-                queries.sendAllVolunteersQuery(this.handleAllVolunteers.bind(this))
+                this.sendQuery(query.ALL_VOLUNTEERS, "", 
+                                this.handleAllVolunteers.bind(this));
         }; 
+    };
+
+    sendQuery = (query_name, params, data_handler) => {
+        let requestUrl = encodeURI(`http://localhost:${port}/${query_name}/${params}`);
+        $.ajax({
+            type: "GET",
+            url: requestUrl,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(response) {
+                data_handler(response);
+            }
+        });
     };
 
     renderContent = () => {
@@ -82,7 +100,7 @@ class UI extends React.Component {
                     return (
                         <SpecifiedList 
                             data={this.state.table_body}
-                            columns={this.state.table_header}            
+                            columns={this.state.table_header}     
                         />
                     );
 
@@ -107,7 +125,7 @@ class UI extends React.Component {
 
                 <Menu>
                     <Menu.Item
-                      name='all_sportmen'
+                      name='all_sportsmen'
                       active={activeItem === 'all_sportsmen'}
                       content='Список всех спортсменов'
                       onClick={this.handleItemClick.bind(this)}
@@ -131,7 +149,7 @@ class UI extends React.Component {
                 {this.renderContent()}
             </div>
         );
-    }
+    };
 }
 
 export default UI;

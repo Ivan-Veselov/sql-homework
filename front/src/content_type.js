@@ -3,3 +3,5 @@ var content_type = {
 	INFO: "info",
 	NONE: "no_content"
 };
+
+module.exports = content_type;
