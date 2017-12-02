@@ -1,6 +1,8 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react'
 import SpecifiedList from './list-view.js';
+var queries = require('../queries.js');
+var content_type = require('../content_type.js');
 
 /**
     Center align
@@ -14,90 +16,81 @@ const center = {
     marginBottom: "20px",
 };
 
-
+// Global todo: fix code style
 class UI extends React.Component {
     constructor() {
         super();
 
-        this.state = {isContentRendered: false};
+        this.state = {
+            contentType : content_type.NONE
+        };
     }
 
-    /**
-        On sportmen click -- view all sportsmen
-        On accomodation click -- view all accomodations
-    */
+    handleAllSportsmen = (response) => {
+        this.state = {
+            contentType: content_type.TABLE,
+            table_header: ["Имя", "Фамилия"],
+            table_body: response
+        };
+    };
+
+    handleAllAccomodations = (response) => {
+        this.state = {
+            contentType: content_type.TABLE,
+            table_header: ["Название", "Адрес"],
+            table_body: response
+        };
+    };
+
+    handleAllVolunteers = (response) => {
+        this.state = {
+            contentType: content_type.TABLE,
+            table_header: ["Имя", "Телефон"],
+            table_body: response
+        };
+    };
+
+    handleGetSportsmen = (response) => {
+        this.state = {
+            contentType: content_type.INFO
+            // TODO: add specified json fields
+        };
+    };
+
+    // handleGetAccomodation
+    // handleGetVolunteer
+
     handleItemClick = (e, { name }) => {
         this.setState({ activeItem: name });
 
         switch (name) {
             case 'all_sportsmen':
-                this.sendAllSportsmenQuery()
+                queries.sendAllSportsmenQuery(this.handleAllSportsmen.bind(this))
 
             case 'all_accomodations':
-                this.sendAllAccomodationsQuery()
+                queries.sendAllAccomodationsQuery(this.handleAllAccomodations.bind(this))
+
+            case 'all_volunteers':
+                queries.sendAllVolunteersQuery(this.handleAllVolunteers.bind(this))
         }; 
     };
 
-    // TODO: extract this to another query handle file
-    sendAllSportsmenQuery = () => {
-        let query_name = "/sportsman/all";
-        let params = "";
+    renderContent = () => {
+        if (this.state.contentType != content_type.NONE) {
+            switch (this.state.content_type) {
+                case content_type.TABLE:
+                    return (
+                        <SpecifiedList 
+                            data={this.state.table_body}
+                            columns={this.state.table_header}            
+                        />
+                    );
 
-        data_handler = (response) => {
-            this.state = {
-                isContentRendered: true,
-                table_header: ["Имя", "Фамилия"],
-                table_body: response
-            };
-        };
-    };
-
-    sendAllAccomodationsQuery = () => {
-        let query_name = "/accomodation/all";
-        let params = "";
-
-        data_handler = (response) => {
-            this.state = {
-                isContentRendered: true,
-                table_header: ["Название", "Адрес"],
-                table_body: response
-            };
-        };
-    };
-
-    sendSportsmanGetQuery = (sportsman_id) => {
-        let query_name = "/sportsman/get";
-        let params = "id=" + sportsman_id;
-
-        data_handler = (response) => {
-            this.state = {
-                isContentRendered: true
-                // do I want to identify type of content and render it properly?
-            };
-        };
-    }
-
-    sendQuery = (query_name, params, data_handler) => {
-        let requestUrl = encodeURI("http://localhost:1234/" + query_name + "/" + params);
-        $.ajax({
-            type: "GET",
-            url: requestUrl,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(response) {
-                data_handler(response);
+                case content_type.INFO:
+                    return (
+                        <h1> black magic </h1>
+                    );
             }
-        });
-    };
-
-    renderQueryContent = () => {
-        if (this.state.isContentRendered) {
-            return (
-                <SpecifiedList 
-                    data={this.state.table_body}
-                    columns={this.state.table_header}            
-                />
-            );
         }
     };
 
@@ -105,7 +98,7 @@ class UI extends React.Component {
      * Rendering tabs together.
      */
     render() {
-        const { activeItem } = this.state
+        const activeItem = this.state.activeItem
 
         // TODO: make clicked/unclicked menu items
         return (
@@ -126,9 +119,16 @@ class UI extends React.Component {
                       content='Список всех помещений'
                       onClick={this.handleItemClick.bind(this)}
                     />
+
+                    <Menu.Item
+                      name='all_volunteers'
+                      active={activeItem === 'all_volunteers'}
+                      content='Список всех волонтеров'
+                      onClick={this.handleItemClick.bind(this)}
+                    />
                 </Menu>
 
-                {this.renderQueryContent()}
+                {this.renderContent()}
             </div>
         );
     }
