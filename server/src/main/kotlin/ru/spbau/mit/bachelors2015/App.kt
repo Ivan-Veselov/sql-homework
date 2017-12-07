@@ -19,23 +19,24 @@ class DullDataBaseManager : DataBaseManager {
         TODO("not implemented")
     }
 
-    override fun allVolunteers(): List<AccommodationBrief> {
+    override fun allVolunteers(): List<VolunteerBrief> {
         TODO("not implemented")
     }
 
-    override fun getAthlete(athleteId: Int): Athlete {
-        TODO("not implemented")
+    override fun getAthlete(athleteId: Int): Athlete? {
+        return athletes.getOrNull(athleteId)
     }
 
-    override fun getAccommodation(accommodationId: Int): Accommodation {
-        TODO("not implemented")
+    override fun getAccommodation(accommodationId: Int): Accommodation? {
+        return accommodations.getOrNull(accommodationId)
     }
 
-    override fun getVolunteer(volunteerId: Int): Volunteer {
-        TODO("not implemented")
+    override fun getVolunteer(volunteerId: Int): Volunteer? {
+        return volunteers.getOrNull(volunteerId)
     }
 
     override fun setAthleteInfo(athleteId: Int, accommodationId: Int, volunteerId: Int) {
+        TODO("not implemented")
     }
 }
 
