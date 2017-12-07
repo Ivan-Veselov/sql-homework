@@ -1,24 +1,20 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {getQuery} from '../actions/index'
 
 class SpecifiedList extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: this.props.data,
-            columns: this.props.columns,
-            click_handler: this.props.handler
-        }
-    }
-
+    // change with map
     renderTableHeader = () => {
-        cells = [];
-        for (var i = 0; i < this.props.columns.length; i++) {
+        let cells = [];
+        for (let i = 0; i < this.props.columns.length; i++) {
             let column_name = this.props.columns[i];
 
             cells.push(
-                <Table.HeaderCell> {column_name} </Table.HeaderCell>
+                <Table.HeaderCell> 
+                    {column_name} 
+                </Table.HeaderCell>
             );
         }
 
@@ -30,43 +26,74 @@ class SpecifiedList extends React.Component {
     };
 
     renderTableBody = () => {
-        rows = []
-        for (var i = 0; i < this.props.data.length; i++) {
+        let rows = [];
+        for (let i = 0; i < this.props.data.length; i++) {
             let current_row = this.props.data[i];
             let row_cells = [];
-            for (var j = 0; j < current_row.length; j++) {
-                let current_row_item = current_row[j]
+            let row_id = -1;
+
+            for (let item in current_row) {
+                if (item === "id") {
+                    row_id = current_row[item];
+                    continue;
+                }
 
                 row_cells.push(
-                    <Table.Cell> {current_row_item} </Table.Cell>
+                    <Table.Cell>
+                        {current_row[item]}
+                    </Table.Cell>
                 );
             }
 
-            cells.push(
-                <Table.Row>
+
+            rows.push(
+                <Table.Row
+                    key={i}
+                    onClick={() => this.props.rowReducer(row_id, this.props.queryType)}
+                >
                     {row_cells}
                 </Table.Row>
             );
         }
 
         return (
-            {rows}
+            <Table.Body>
+                {rows}
+            </Table.Body>
         );
     };
 
     render() {
         return (
-            <Table singleLine compact>
-                <Table.Header>
-                    {this.renderTableHeader()}
-                </Table.Header>
+            <div style={{ width:"60%" }}>
+                <Table singleLine compact size="large">
+                    <Table.Header>
+                        {this.renderTableHeader()}
+                    </Table.Header>
 
-                <Table.Body>
                     {this.renderTableBody()}
-                </Table.Body>
-            </Table>
+                </Table>
+            </div>
         );
     }
 }
 
-export default SpecifiedList;
+// Get apps state and pass it as props to SpecifiedList
+//      > whenever state changes, the SpecifiedList will automatically re-render
+function mapStateToProps(state) {
+    return {
+        data: state.data,
+        columns: state.columns,
+        queryType: state.type
+    };
+}
+
+// Get actions and pass them as props to to SpecifiedList
+//      > now SpecifiedList has this.props.selectCell
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({selectRow : getQuery}, dispatch);
+}
+
+// We don't want to return the plain SpecifiedList (component) anymore, we want to return the smart Container
+//      > SpecifiedList is now aware of state and actions
+export default connect(mapStateToProps, matchDispatchToProps)(SpecifiedList);

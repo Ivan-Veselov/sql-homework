@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu } from 'semantic-ui-react'
 import SpecifiedList from './list-view.js';
 import $ from "jquery";
+let responses = require('../mock_responses');
 let query = require('../query');
 let content_type = require('../content_type');
 let port = 1234;
@@ -31,7 +32,7 @@ class UI extends React.Component {
     handleAllSportsmen = (response) => {
         this.state = {
             contentType: content_type.TABLE,
-            table_header: ["Имя", "Фамилия"],
+            table_header: ["Имя Фамилия"],
             table_body: response
         };
     };
@@ -39,7 +40,7 @@ class UI extends React.Component {
     handleAllAccomodations = (response) => {
         this.state = {
             contentType: content_type.TABLE,
-            table_header: ["Название", "Адрес"],
+            table_header: ["Название улицы", "Номер дома"],
             table_body: response
         };
     };
@@ -47,7 +48,7 @@ class UI extends React.Component {
     handleAllVolunteers = (response) => {
         this.state = {
             contentType: content_type.TABLE,
-            table_header: ["Имя", "Телефон"],
+            table_header: ["Имя Фамилия"],
             table_body: response
         };
     };
@@ -67,17 +68,22 @@ class UI extends React.Component {
 
         switch (name) {
             case 'all_sportsmen':
-                this.sendQuery(query.ALL_SPORTSMEN, "", 
-                                this.handleAllSportsmen.bind(this));
+                this.handleAllSportsmen(responses.all_sportsmen);
+                break;
+                /*this.sendQuery(query.ALL_SPORTSMEN, "", 
+                                this.handleAllSportsmen.bind(this));*/
 
             case 'all_accomodations':
-                this.sendQuery(query.ALL_ACCOMODATIONS, "", 
-                                this.handleAllAccomodations.bind(this));
+                this.handleAllAccomodations(responses.all_accomodations);
+                break;
+                /*this.sendQuery(query.ALL_ACCOMODATIONS, "", 
+                                this.handleAllAccomodations.bind(this));*/
 
             case 'all_volunteers':
-                this.sendQuery(query.ALL_VOLUNTEERS, "", 
-                                this.handleAllVolunteers.bind(this));
-        }; 
+                this.handleAllVolunteers(responses.all_volunteers);
+                /*this.sendQuery(query.ALL_VOLUNTEERS, "", 
+                                this.handleAllVolunteers.bind(this));*/
+        }
     };
 
     sendQuery = (query_name, params, data_handler) => {
@@ -94,8 +100,8 @@ class UI extends React.Component {
     };
 
     renderContent = () => {
-        if (this.state.contentType != content_type.NONE) {
-            switch (this.state.content_type) {
+        if (this.state.contentType !== content_type.NONE) {
+            switch (this.state.contentType) {
                 case content_type.TABLE:
                     return (
                         <SpecifiedList 
@@ -116,9 +122,8 @@ class UI extends React.Component {
      * Rendering tabs together.
      */
     render() {
-        const activeItem = this.state.activeItem
+        const activeItem = this.state.activeItem;
 
-        // TODO: make clicked/unclicked menu items
         return (
             <div style={center}>
                 <h1> Olympiad website! </h1>
