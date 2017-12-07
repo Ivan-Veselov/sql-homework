@@ -46,7 +46,7 @@ let all_volunteers = [
     }
 ];
 
-let get_sportsmen = {
+let get_sportsman = {
     "name": "LeBron James",
     "sex": "male",
     "height": 203,

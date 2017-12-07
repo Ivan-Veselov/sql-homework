@@ -3,13 +3,13 @@ let port = 1234;
 
 let allQueryType = {
     ALL_SPORTSMEN: 'sportsman/all',
-    ALL_ACCOMODATIONS: 'accomodation/all',
+    ALL_ACCOMMODATIONS: 'accomodation/all',
     ALL_VOLUNTEERS: 'volunteers/all',
 };
 
 let getQueryType = {
     GET_SPORTSMAN: 'sportsman/get',
-    GET_ACCOMODATION: 'accomodation/get',
+    GET_ACCOMMODATION: 'accomodation/get',
     GET_VOLUNTEER: 'volunteers/get',
 };
 
@@ -20,13 +20,13 @@ let setQueryType = {
 let getCellNames = (queryType) => {
     // TODO: on all query do the same
     switch (queryType) {
-        case query.allQueryType.GET_ACCOMODATION:
+        case allQueryType.GET_ACCOMMODATION:
             return ["Улица", "Номер дома", "Тип помещения", "Название"]; // TODO: название???
 
-        case query.allQueryType.GET_SPORTSMAN:
+        case allQueryType.GET_SPORTSMAN:
             return ["Имя", "Пол", "Рост", "Вес", "Возраст", "Страна"];
 
-        case query.allQueryType.GET_VOLUNTEER:
+        case allQueryType.GET_VOLUNTEER:
             return ["Имя", "Номер телефона"];
     }
 };

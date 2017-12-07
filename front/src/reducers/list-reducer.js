@@ -4,5 +4,6 @@ export default function (state = {}, action) {
         case 'ROW_SELECTED':
             return action.payload;
     }
+
     return state;
 }

@@ -12,7 +12,7 @@ export const getQuery = (id, getQueryType) => {
     };
 
     switch (getQueryType) {
-        case query.allQueryType.GET_ACCOMODATION:
+        case query.allQueryType.GET_ACCOMMODATION:
             recievedResponse = responses.get_accommodation;
             break;
 
@@ -45,7 +45,7 @@ export const getQuery = (id, getQueryType) => {
 export const allQuery = (newActiveItem, allQueryType) => {
     let tableHeader = "";
     switch (allQueryType) {
-        case query.allQueryType.ALL_ACCOMODATIONS:
+        case query.allQueryType.ALL_ACCOMMODATIONS:
             tableHeader = ["Название улицы", "Номер дома"];
             break;
 
@@ -64,7 +64,7 @@ export const allQuery = (newActiveItem, allQueryType) => {
 
     // temporary : remove this switch and uncomment sendQuery for "real" work
     switch (allQueryType) {
-        case query.allQueryType.ALL_ACCOMODATIONS:
+        case query.allQueryType.ALL_ACCOMMODATIONS:
             recievedResponse = responses.all_accommodations;
             break;
 

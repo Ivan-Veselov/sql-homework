@@ -34,7 +34,9 @@ class Details extends React.Component {
             <Table collapsing definition>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell colSpan='2' textAlign='center'> {this.getTableHeader()} </Table.HeaderCell>
+                        <Table.HeaderCell colSpan='2' textAlign='center'>
+                            {this.getTableHeader()}
+                        </Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 

@@ -2,10 +2,10 @@ import React from 'react';
 import { Table } from 'semantic-ui-react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {getQuery} from '../actions/index'
+import {getQuery} from '../actions/index';
 
 class SpecifiedList extends React.Component {
-    // TODO :change with map
+    // TODO : change with map
     // TODO : fix child key prop
     renderTableHeader = () => {
         let cells = [];
@@ -73,7 +73,7 @@ class SpecifiedList extends React.Component {
 
         return (
             <div style={{ width:"60%" }}>
-                <Table singleLine compact size="large">
+                <Table selectable singleLine compact size="large">
                     <Table.Header>
                         {this.renderTableHeader()}
                     </Table.Header>
@@ -90,7 +90,8 @@ class SpecifiedList extends React.Component {
 function mapStateToProps(state) {
     return {
         columns : state.menuReducer.tableHeader,
-        data: state.menuReducer.tableBody
+        data: state.menuReducer.tableBody,
+        queryType: state.query
     }
 }
 
