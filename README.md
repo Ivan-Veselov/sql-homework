@@ -15,3 +15,9 @@
 ## diagram.xml
 
 В файле diagram.xml находится диаграмма таблиц базы данных. Этот файл можно открыть с помощью онлайн сервиса [draw.io](https://www.draw.io/).
+
+## Cервер
+
+[API](https://docs.google.com/document/d/1_x5iuYHjmK96zsDj2hNFROGvErIVjn_cCnLEqmC4TBk/edit?usp=sharing)
+
+[Архитектура](https://docs.google.com/drawings/d/1EQBvECH23qZILDWx2yz7CtsA_SOPlCoKkQavJUeEWEw/edit?usp=sharing)
