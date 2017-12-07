@@ -73,7 +73,7 @@ class Server(database: DataBaseManager) {
             database.setAthleteInfo(athleteId, accommodationId, volunteerId)
         }
 
-        response.redirect("/all") // todo: looks weird; doesn't understand what this is
+        response.redirect("/all") // todo: looks weird; don't understand what this is
         null
     }
 
