@@ -13,7 +13,7 @@ interface DataBaseManager {
 
     fun getVolunteer(volunteerId: Int) : Volunteer?
 
-    fun setAthleteInfo(athleteId: Int, accommodationId: Int, volunteerId: Int)
+    fun setAthleteInfo(athleteId: Int, accommodationId: Int?, volunteerId: Int?)
 }
 
 object DataBaseManagerImpl : DataBaseManager {
@@ -41,7 +41,7 @@ object DataBaseManagerImpl : DataBaseManager {
         TODO("not implemented")
     }
 
-    override fun setAthleteInfo(athleteId: Int, accommodationId: Int, volunteerId: Int) {
+    override fun setAthleteInfo(athleteId: Int, accommodationId: Int?, volunteerId: Int?) {
         TODO("not implemented")
     }
 }
