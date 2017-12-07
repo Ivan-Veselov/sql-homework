@@ -1,7 +1,96 @@
 package ru.spbau.mit.bachelors2015
 
+import com.google.gson.GsonBuilder
+import spark.Request
+import spark.Response
+import spark.Spark.*
+
+fun Request.getIntParam(name: String) : Int? {
+    return try {
+        this.queryParams(name)?.toInt()
+    } catch(_: NumberFormatException) {
+        null
+    }
+}
+
 class Server(database: DataBaseManager) {
-    // TODO
+    private val serverPort = 8080
+
+    private val jsonSerializer = GsonBuilder().serializeNulls().create()
+
+    private val sportsmanAll: (Request, Response) -> Any? = {
+        request, _ ->
+        val accommodationId = request.getIntParam("accommodation_id")
+        val athletes = database.allAthletes(accommodationId)
+
+        jsonSerializer.toJson(athletes)
+    }
+
+    private val accommodationAll: (Request, Response) -> Any? = {
+        _, _ -> jsonSerializer.toJson(database.allAccommodations())
+    }
+
+    private val volunteerAll: (Request, Response) -> Any? = {
+        _, _ -> jsonSerializer.toJson(database.allVolunteers())
+    }
+
+    private val sportsmanGet: (Request, Response) -> Any? = {
+        request, _ ->
+        val athleteId = request.getIntParam("id")
+        val athlete = athleteId?.let { database.getAthlete(it) }
+
+        jsonSerializer.toJson(athlete)
+    }
+
+    private val accommodationGet: (Request, Response) -> Any? = {
+        request, _ ->
+        val accommodationId = request.getIntParam("id")
+        val accommodation = accommodationId?.let { database.getAccommodation(it) }
+
+        jsonSerializer.toJson(accommodation)
+    }
+
+    private val volunteerGet: (Request, Response) -> Any? = {
+        request, _ ->
+        val volunteerId = request.getIntParam("id")
+        val volunteer = volunteerId?.let { database.getVolunteer(it) }
+
+        jsonSerializer.toJson(volunteer)
+    }
+
+    private val sportsmanSet: (Request, Response) -> Any? = {
+        request, _ ->
+        val athleteId = request.getIntParam("id")
+        val accommodationId = request.getIntParam("accommodation_id")
+        val volunteerId = request.getIntParam("volunteer_id")
+
+        if (athleteId != null && accommodationId != null && volunteerId != null) {
+            database.setAthleteInfo(athleteId, accommodationId, volunteerId)
+        }
+
+        null
+    }
+
+    fun run() {
+        init()
+
+        get("/sportsman/all", sportsmanAll)
+        get("/accommodation/all", accommodationAll)
+        get("volunteer/all", volunteerAll)
+        get("/sportsman/get", sportsmanGet)
+        get("/accommodation/get", accommodationGet)
+        get("/volunteer/get", volunteerGet)
+        get("/sportsman/set", sportsmanSet)
+    }
+
+    private fun init() {
+        exception<Exception>(Exception::class.java) {
+            e, _, _ -> e.printStackTrace()
+        }
+
+        // staticFiles.location("/public") todo: what is it?
+        port(serverPort)
+    }
 }
 
 class DullDataBaseManager : DataBaseManager {
@@ -68,8 +157,9 @@ class DullDataBaseManager : DataBaseManager {
         )
 
     override fun allAthletes(accommodationId: Int?): List<AthleteBrief> {
-        return (1..athletes.size).filter { athletes[it - 1].accommodation?.id != accommodationId }
-                                 .map { athletes[it - 1].brief(it) }
+        return (1..athletes.size).filter {
+            accommodationId == null || athletes[it - 1].accommodation?.id == accommodationId
+        }.map { athletes[it - 1].brief(it) }
     }
 
     override fun allAccommodations(): List<AccommodationBrief> {
@@ -97,7 +187,6 @@ class DullDataBaseManager : DataBaseManager {
     }
 }
 
-fun main(args: ArrayList<String>) {
-    Server(DullDataBaseManager())
-    TODO("not implemented")
+fun main(args: Array<String>) {
+    Server(DullDataBaseManager()).run()
 }
