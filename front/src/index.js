@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import BodyBackgroundColor from 'react-body-backgroundcolor';
-import UI from './components/ui.js';
+import UI from './components/menu.js';
 import allReducers from './reducers';
 
 injectTapEventPlugin();
