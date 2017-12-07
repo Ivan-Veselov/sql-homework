@@ -7,7 +7,7 @@ PERFORM setseed(0.42);
 
 -- building_types
 INSERT INTO building_types(type)
-  SELECT unnest(ARRAY['Hotel', 'Swimming pull', 'Sports complex', 'Office', 'Catering', 'Pump track']);
+  SELECT unnest(ARRAY['Hotel', 'Swimming pool', 'Sports complex', 'Office', 'Catering', 'Pump track']);
 
 -- buildings
 WITH Addresses AS (
