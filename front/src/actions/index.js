@@ -1,5 +1,3 @@
-import $ from "jquery";
-let port = 1234;
 let query = require('../query');
 let responses = require('../mock-responses');
 
@@ -30,7 +28,7 @@ export const getQuery = (id, getQueryType) => {
 
     let data = {
         queryType: getQueryType,
-        recievedResponse,
+        object: recievedResponse,
         id
     };
 
