@@ -2,10 +2,11 @@ import React from 'react';
 import { Menu } from 'semantic-ui-react'
 import SpecifiedList from './list-view.js';
 import $ from "jquery";
+import {connect} from "react-redux";
+import {getQuery} from "../actions";
+import {bindActionCreators} from "redux/index";
 let responses = require('../mock_responses');
-let query = require('../query');
 let content_type = require('../content_type');
-let port = 1234;
 
 /**
     Center align
@@ -21,48 +22,6 @@ const center = {
 
 // Global todo: fix code style
 class UI extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            contentType : content_type.NONE
-        };
-    }
-
-    handleAllSportsmen = (response) => {
-        this.state = {
-            contentType: content_type.TABLE,
-            table_header: ["Имя Фамилия"],
-            table_body: response
-        };
-    };
-
-    handleAllAccomodations = (response) => {
-        this.state = {
-            contentType: content_type.TABLE,
-            table_header: ["Название улицы", "Номер дома"],
-            table_body: response
-        };
-    };
-
-    handleAllVolunteers = (response) => {
-        this.state = {
-            contentType: content_type.TABLE,
-            table_header: ["Имя Фамилия"],
-            table_body: response
-        };
-    };
-
-    handleGetSportsmen = (response) => {
-        this.state = {
-            contentType: content_type.INFO
-            // TODO: add specified json fields
-        };
-    };
-
-    // handleGetAccomodation
-    // handleGetVolunteer
-
     handleItemClick = (e, { name }) => {
         this.setState({ activeItem: name });
 
@@ -84,19 +43,6 @@ class UI extends React.Component {
                 /*this.sendQuery(query.ALL_VOLUNTEERS, "", 
                                 this.handleAllVolunteers.bind(this));*/
         }
-    };
-
-    sendQuery = (query_name, params, data_handler) => {
-        let requestUrl = encodeURI(`http://localhost:${port}/${query_name}/${params}`);
-        $.ajax({
-            type: "GET",
-            url: requestUrl,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function(response) {
-                data_handler(response);
-            }
-        });
     };
 
     renderContent = () => {
@@ -157,4 +103,20 @@ class UI extends React.Component {
     };
 }
 
-export default UI;
+
+// Get apps state and pass it as props to SpecifiedList
+//      > whenever state changes, the SpecifiedList will automatically re-render
+function mapStateToProps(state) {
+    return {
+        data: state.data,
+        columns: state.columns,
+        queryType: state.type
+    };
+}
+
+// Get actions and pass them as props to to UI
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({selectRow : getQuery}, dispatch);
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(UI);
