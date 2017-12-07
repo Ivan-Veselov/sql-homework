@@ -5,7 +5,8 @@ import {connect} from 'react-redux';
 import {getQuery} from '../actions/index'
 
 class SpecifiedList extends React.Component {
-    // change with map
+    // TODO :change with map
+    // TODO : fix child key prop
     renderTableHeader = () => {
         console.log(this.props);
         let cells = [];

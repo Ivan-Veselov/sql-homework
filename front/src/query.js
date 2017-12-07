@@ -5,9 +5,9 @@ let allQueryType = {
 };
 
 let getQueryType = {
-    GET_SPORTSMEN: 'sportsman/get',
-    GET_ACCOMODATIONS: 'accomodation/get',
-    GET_VOLUNTEERS: 'volunteers/get',
+    GET_SPORTSMAN: 'sportsman/get',
+    GET_ACCOMODATION: 'accomodation/get',
+    GET_VOLUNTEER: 'volunteers/get',
 };
 
 let setQueryType = {

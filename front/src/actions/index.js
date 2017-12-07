@@ -1,33 +1,52 @@
 import $ from "jquery";
 let port = 1234;
 let query = require('../query');
-let responses = require('../mock_responses');
+let responses = require('../mock-responses');
 
 /**
- * @param rowId is same as id of object that it holds
- * @param getQueryType /accommodation/get, /sportsman/get, /volunteer/get -- TODO -- global enum
+ * @param id object's id
+ * @param getQueryType /accommodation/get, /sportsman/get, /volunteer/get
  */
-export const getQuery = (rowId, getQueryType) => {
-    // TODO handle get queries
+export const getQuery = (id, getQueryType) => {
+    let recievedResponse = {};
+    let handler = response => {
+        recievedResponse = response;
+    };
+
+    switch (getQueryType) {
+        case query.allQueryType.GET_ACCOMODATION:
+            recievedResponse = responses.get_accommodation;
+            break;
+
+        case query.allQueryType.GET_SPORTSMAN:
+            recievedResponse = responses.get_sportsman;
+            break;
+
+        case query.allQueryType.GET_VOLUNTEER:
+            recievedResponse = responses.get_volunteer;
+            break;
+    }
+    //sendQuery(getQueryType, `id=${id}`);
 
     let data = {
         queryType: getQueryType,
-        rowId
+        recievedResponse,
+        id
     };
-    return {
-        type: 'MENU_SELECTED',
-        payload: data
 
+    return {
+        type: 'ROW_SELECTED',
+        payload: data
     }
 };
 
 /**
- * @param queryType same as get, but "all"
+ * @param allQueryType same as get, but "all"
  * @param newActiveItem active menu item
  */
-export const allQuery = (newActiveItem, queryType) => {
+export const allQuery = (newActiveItem, allQueryType) => {
     let tableHeader = "";
-    switch (queryType) {
+    switch (allQueryType) {
         case query.allQueryType.ALL_ACCOMODATIONS:
             tableHeader = ["Название улицы", "Номер дома"];
             break;
@@ -46,9 +65,9 @@ export const allQuery = (newActiveItem, queryType) => {
     };
 
     // temporary : remove this switch and uncomment sendQuery for "real" work
-    switch (queryType) {
+    switch (allQueryType) {
         case query.allQueryType.ALL_ACCOMODATIONS:
-            recievedResponse = responses.all_accomodations;
+            recievedResponse = responses.all_accommodations;
             break;
 
         case query.allQueryType.ALL_SPORTSMEN:
@@ -61,7 +80,7 @@ export const allQuery = (newActiveItem, queryType) => {
     }
     //sendQuery(allQueryType, "", handler);
     let data = {
-        queryType: queryType,
+        queryType: allQueryType,
         tableHeader: tableHeader,
         tableBody: recievedResponse,
         activeItem: newActiveItem
@@ -74,7 +93,8 @@ export const allQuery = (newActiveItem, queryType) => {
 };
 
 let sendQuery = (queryName, params, dataHandler) => {
-    let requestUrl = encodeURI(`http://localhost:${port}/${queryName}/${params}`);
+    let convertedParams = params === "" ? "" : `?${params}`;
+    let requestUrl = encodeURI(`http://localhost:${port}/${queryName}${convertedParams}`);
     $.ajax({
         type: "GET",
         url: requestUrl,
