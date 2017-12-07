@@ -91,17 +91,3 @@ export const allQuery = (newActiveItem, allQueryType) => {
         payload: data
     }
 };
-
-let sendQuery = (queryName, params, dataHandler) => {
-    let convertedParams = params === "" ? "" : `?${params}`;
-    let requestUrl = encodeURI(`http://localhost:${port}/${queryName}${convertedParams}`);
-    $.ajax({
-        type: "GET",
-        url: requestUrl,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(response) {
-            dataHandler(response);
-        }
-    });
-};

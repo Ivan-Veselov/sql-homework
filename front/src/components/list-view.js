@@ -8,7 +8,6 @@ class SpecifiedList extends React.Component {
     // TODO :change with map
     // TODO : fix child key prop
     renderTableHeader = () => {
-        console.log(this.props);
         let cells = [];
         for (let index = 0; index < this.props.columns.length; index++) {
             let columnName = this.props.columns[index];
@@ -32,11 +31,11 @@ class SpecifiedList extends React.Component {
         for (let index = 0; index < this.props.data.length; index++) {
             let currentRow = this.props.data[index];
             let rowCells = [];
-            let rowId = -1;
+            let objectId = -1;
 
             for (let item in currentRow) {
                 if (item === "id") {
-                    rowId = currentRow[item];
+                    objectId = currentRow[item];
                     continue;
                 }
 
@@ -47,11 +46,12 @@ class SpecifiedList extends React.Component {
                 );
             }
 
-
+            let allQuery = this.props.queryType;
+            let getQuery = this.createGetQuery(allQuery);
             rows.push(
                 <Table.Row
                     key={index}
-                    //onClick={() => this.props.rowReducer(row_id, this.props.queryType)}
+                    onClick={() => this.props.selectRow(objectId, getQuery)}
                 >
                     {rowCells}
                 </Table.Row>
@@ -63,6 +63,10 @@ class SpecifiedList extends React.Component {
                 {rows}
             </Table.Body>
         );
+    };
+
+    createGetQuery = (allQuery) => {
+        return allQuery.replace("all", "get");
     };
 
     render() {
