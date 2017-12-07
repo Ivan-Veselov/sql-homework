@@ -2,6 +2,7 @@ import {combineReducers} from 'redux';
 import RowReducer from './row-reducer';
 import MenuReducer from './menu-reducer';
 
+// TODO: create list reducer
 const allReducers = combineReducers({
     rowReducer : RowReducer,
     menuReducer : MenuReducer

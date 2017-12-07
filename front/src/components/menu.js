@@ -3,7 +3,7 @@ import { Menu } from 'semantic-ui-react'
 import SpecifiedList from './list-view.js';
 import {connect} from "react-redux";
 import {allQuery} from "../actions";
-import {bindActionCreators} from "redux/index";
+import {bindActionCreators} from "redux";
 let query = require('../query');
 
 /**
@@ -20,11 +20,22 @@ const center = {
 
 // Global todo: fix code style
 class UI extends React.Component {
+    renderContent = () => {
+        if (this.props.queryType !== undefined) {
+           return (
+               <SpecifiedList />
+           );
+        }
+    };
+
     /**
      * Rendering tabs together.
      */
     render() {
-        const activeItem = this.state.activeItem;
+        const activeItem = this.props.activeItem;
+        const allSportsmenItem = 'all_sportsmen';
+        const allAccommodationsItem = 'all_accomodations';
+        const allVolunteersItem = 'all_volunteers';
 
         return (
             <div style={center}>
@@ -32,31 +43,31 @@ class UI extends React.Component {
 
                 <Menu>
                     <Menu.Item
-                      name='all_sportsmen'
-                      active={activeItem === 'all_sportsmen'}
+                      name={allSportsmenItem}
+                      active={activeItem === allSportsmenItem}
                       content='Список всех спортсменов'
-                      onClick={() => this.props.selectMenuItem(this, 'all_sportsmen',
-                                            query.allQueryType.ALL_SPORTSMEN)}
+                      onClick={() => this.props.selectMenuItem(allSportsmenItem,
+                                                                query.allQueryType.ALL_SPORTSMEN)}
                     />
 
                     <Menu.Item
-                      name='all_accomodations'
-                      active={activeItem === 'all_accomodations'}
+                      name={allAccommodationsItem}
+                      active={activeItem === allAccommodationsItem}
                       content='Список всех помещений'
-                      onClick={() => this.props.selectMenuItem(this, 'all_accomodations',
-                                            query.allQueryType.ALL_ACCOMODATIONS)}
+                      onClick={() => this.props.selectMenuItem(allAccommodationsItem,
+                                                                query.allQueryType.ALL_ACCOMODATIONS)}
                     />
 
                     <Menu.Item
-                      name='all_volunteers'
-                      active={activeItem === 'all_volunteers'}
+                      name={allVolunteersItem}
+                      active={activeItem === allVolunteersItem}
                       content='Список всех волонтеров'
-                      onClick={() => this.props.selectMenuItem(this, 'all_volunteers',
-                                            query.allQueryType.ALL_VOLUNTEERS)}
+                      onClick={() => this.props.selectMenuItem(allVolunteersItem,
+                                                                query.allQueryType.ALL_VOLUNTEERS)}
                     />
                 </Menu>
 
-                <SpecifiedList />
+                {this.renderContent()}
             </div>
         );
     };
@@ -65,10 +76,7 @@ class UI extends React.Component {
 
 // Get apps state and pass it as props to UI
 function mapStateToProps(state) {
-    return {
-        tableHeader: state.tableHeader,
-        tableBody: state.tableBody,
-    };
+    return state.menuReducer;
 }
 
 // Get actions and pass them as props to to UI

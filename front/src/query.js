@@ -15,7 +15,7 @@ let setQueryType = {
 };
 
 module.exports = {
-    allQueryType,
-    getQueryType,
-    setQueryType
+    allQueryType : allQueryType,
+    getQueryType : getQueryType,
+    setQueryType : setQueryType
 };

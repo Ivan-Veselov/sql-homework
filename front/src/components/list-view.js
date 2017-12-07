@@ -7,12 +7,13 @@ import {getQuery} from '../actions/index'
 class SpecifiedList extends React.Component {
     // change with map
     renderTableHeader = () => {
+        console.log(this.props);
         let cells = [];
         for (let index = 0; index < this.props.columns.length; index++) {
             let columnName = this.props.columns[index];
 
             cells.push(
-                <Table.HeaderCell> 
+                <Table.HeaderCell>
                     {columnName}
                 </Table.HeaderCell>
             );
@@ -64,6 +65,7 @@ class SpecifiedList extends React.Component {
     };
 
     render() {
+
         return (
             <div style={{ width:"60%" }}>
                 <Table singleLine compact size="large">
@@ -82,10 +84,9 @@ class SpecifiedList extends React.Component {
 //      > whenever state changes, the SpecifiedList will automatically re-render
 function mapStateToProps(state) {
     return {
-        data: state.tableBody,
-        columns: state.tableHeader,
-        queryType: state.type
-    };
+        columns : state.menuReducer.tableHeader,
+        data: state.menuReducer.tableBody
+    }
 }
 
 // Get actions and pass them as props to to SpecifiedList

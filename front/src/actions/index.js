@@ -10,31 +10,33 @@ let responses = require('../mock_responses');
 export const getQuery = (rowId, getQueryType) => {
     // TODO handle get queries
 
-    return {
-        type: 'MENU_SELECTED',
+    let data = {
         queryType: getQueryType,
         rowId
+    };
+    return {
+        type: 'MENU_SELECTED',
+        payload: data
+
     }
 };
 
 /**
- * @param allQueryType same as get, but "all"
+ * @param queryType same as get, but "all"
+ * @param newActiveItem active menu item
  */
-export const allQuery = (menu, newActiveItem, allQueryType) => {
-    menu.setState({ activeItem: newActiveItem });
-
+export const allQuery = (newActiveItem, queryType) => {
     let tableHeader = "";
-    switch(allQueryType) {
-        // wtf?
-        query.allQueryType.ALL_ACCOMODATIONS:
+    switch (queryType) {
+        case query.allQueryType.ALL_ACCOMODATIONS:
             tableHeader = ["Название улицы", "Номер дома"];
             break;
 
-        query.allQueryType.ALL_SPORTSMEN:
+        case query.allQueryType.ALL_SPORTSMEN:
             tableHeader = ["Имя Фамилия"];
             break;
 
-        query.allQueryType.ALL_VOLUNTEERS:
+        case query.allQueryType.ALL_VOLUNTEERS:
             tableHeader = ["Имя Фамилия"];
     }
 
@@ -44,30 +46,34 @@ export const allQuery = (menu, newActiveItem, allQueryType) => {
     };
 
     // temporary : remove this switch and uncomment sendQuery for "real" work
-    switch(allQueryType) {
-        query.allQueryType.ALL_ACCOMODATIONS:
+    switch (queryType) {
+        case query.allQueryType.ALL_ACCOMODATIONS:
             recievedResponse = responses.all_accomodations;
             break;
 
-        query.allQueryType.ALL_SPORTSMEN:
+        case query.allQueryType.ALL_SPORTSMEN:
             recievedResponse = responses.all_sportsmen;
             break;
 
-        query.allQueryType.ALL_VOLUNTEERS:
+        case query.allQueryType.ALL_VOLUNTEERS:
             recievedResponse = responses.all_volunteers;
-
+            break;
     }
     //sendQuery(allQueryType, "", handler);
+    let data = {
+        queryType: queryType,
+        tableHeader: tableHeader,
+        tableBody: recievedResponse,
+        activeItem: newActiveItem
+    };
 
     return {
         type: 'MENU_SELECTED',
-        queryType: allQueryType,
-        tableHeader: tableHeader,
-        tableBody: recievedResponse
+        payload: data
     }
 };
 
-sendQuery = (queryName, params, dataHandler) => {
+let sendQuery = (queryName, params, dataHandler) => {
     let requestUrl = encodeURI(`http://localhost:${port}/${queryName}/${params}`);
     $.ajax({
         type: "GET",
