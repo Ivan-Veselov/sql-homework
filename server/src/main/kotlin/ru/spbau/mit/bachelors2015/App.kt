@@ -68,15 +68,16 @@ class DullDataBaseManager : DataBaseManager {
         )
 
     override fun allAthletes(accommodationId: Int?): List<AthleteBrief> {
-        TODO("not implemented")
+        return (1..athletes.size).filter { athletes[it - 1].accommodation?.id != accommodationId }
+                                 .map { athletes[it - 1].brief(it) }
     }
 
     override fun allAccommodations(): List<AccommodationBrief> {
-        TODO("not implemented")
-    }
+        return  (1..accommodations.size).map { accommodations[it - 1].brief(it) }
+  }
 
     override fun allVolunteers(): List<VolunteerBrief> {
-        TODO("not implemented")
+        return (1..volunteers.size).map { volunteers[it - 1].brief(it) }
     }
 
     override fun getAthlete(athleteId: Int): Athlete? {
@@ -97,5 +98,6 @@ class DullDataBaseManager : DataBaseManager {
 }
 
 fun main(args: ArrayList<String>) {
+    Server(DullDataBaseManager())
     TODO("not implemented")
 }
