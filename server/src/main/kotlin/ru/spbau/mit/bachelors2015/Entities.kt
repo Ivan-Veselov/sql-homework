@@ -8,9 +8,9 @@ data class Athlete(
     private val height: Int,
     private val weight: Int,
     private val age: Int,
-    private val accommodation: AccommodationBrief,
+    private val accommodation: AccommodationBrief?,
     private val country: String,
-    private val volunteer: VolunteerBrief
+    private val volunteer: VolunteerBrief?
 ) {
     fun brief(id: Int) : AthleteBrief {
         return AthleteBrief(id, name)
@@ -27,7 +27,7 @@ data class Accommodation(
     private val street: String,
     private val houseNumber: Int,
     private val type: String,
-    private val name: String
+    private val name: String?
 ) {
     fun brief(id: Int) : AccommodationBrief {
         return AccommodationBrief(id, street, houseNumber)
