@@ -13,6 +13,7 @@ fun Request.getIntParam(name: String) : Int? {
     }
 }
 
+// todo: error responses for incorrect api usage
 class Server(database: DataBaseManager) {
     private val serverPort = 8080
 
@@ -65,8 +66,7 @@ class Server(database: DataBaseManager) {
         val accommodationId = request.getIntParam("accommodation_id")
         val volunteerId = request.getIntParam("volunteer_id")
 
-        // todo: add possible nulls
-        if (athleteId != null && accommodationId != null && volunteerId != null) {
+        if (athleteId != null) {
             database.setAthleteInfo(athleteId, accommodationId, volunteerId)
         }
 
@@ -185,11 +185,11 @@ class DullDataBaseManager : DataBaseManager {
         return volunteers.getOrNull(volunteerId - 1)
     }
 
-    override fun setAthleteInfo(athleteId: Int, accommodationId: Int, volunteerId: Int) {
+    override fun setAthleteInfo(athleteId: Int, accommodationId: Int?, volunteerId: Int?) {
         val pos = athleteId - 1
         val athlete = athletes[pos]
-        val accommodation = accommodations[accommodationId - 1].brief(accommodationId)
-        val volunteer = volunteers[volunteerId - 1].brief(volunteerId)
+        val accommodation = accommodationId?.let { accommodations[it - 1].brief(it) }
+        val volunteer = volunteerId?.let { volunteers[it - 1].brief(it) }
 
         athletes[pos] = Athlete(
             athlete.name,
