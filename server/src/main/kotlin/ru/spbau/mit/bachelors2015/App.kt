@@ -59,21 +59,18 @@ class Server(database: DataBaseManager) {
     }
 
     private val sportsmanSet: (Request, Response) -> Any? = {
-        request, response ->
+        request, _ ->
+
         val athleteId = request.getIntParam("id")
         val accommodationId = request.getIntParam("accommodation_id")
         val volunteerId = request.getIntParam("volunteer_id")
 
-        // todo: somewhy they are nulls
-        println(athleteId)
-        println(accommodationId)
-        println(volunteerId)
         // todo: add possible nulls
         if (athleteId != null && accommodationId != null && volunteerId != null) {
             database.setAthleteInfo(athleteId, accommodationId, volunteerId)
         }
 
-        response.redirect("/all") // todo: looks weird; don't understand what this is
+        // response.redirect("/all") // todo: looks weird; don't understand what this is
         null
     }
 
