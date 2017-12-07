@@ -5,7 +5,7 @@ interface DataBaseManager {
 
     fun allAccommodations() : List<AccommodationBrief>
 
-    fun allVolunteers() : List<AccommodationBrief>
+    fun allVolunteers() : List<VolunteerBrief>
 
     fun getAthlete(athleteId: Int) : Athlete?
 
@@ -25,7 +25,7 @@ object DataBaseManagerImpl : DataBaseManager {
         TODO("not implemented")
     }
 
-    override fun allVolunteers() : List<AccommodationBrief> {
+    override fun allVolunteers() : List<VolunteerBrief> {
         TODO("not implemented")
     }
 
