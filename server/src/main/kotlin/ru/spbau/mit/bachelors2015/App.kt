@@ -59,15 +59,21 @@ class Server(database: DataBaseManager) {
     }
 
     private val sportsmanSet: (Request, Response) -> Any? = {
-        request, _ ->
+        request, response ->
         val athleteId = request.getIntParam("id")
         val accommodationId = request.getIntParam("accommodation_id")
         val volunteerId = request.getIntParam("volunteer_id")
 
+        // todo: somewhy they are nulls
+        println(athleteId)
+        println(accommodationId)
+        println(volunteerId)
+        // todo: add possible nulls
         if (athleteId != null && accommodationId != null && volunteerId != null) {
             database.setAthleteInfo(athleteId, accommodationId, volunteerId)
         }
 
+        response.redirect("/all") // todo: looks weird; doesn't understand what this is
         null
     }
 
@@ -88,7 +94,7 @@ class Server(database: DataBaseManager) {
             e, _, _ -> e.printStackTrace()
         }
 
-        // staticFiles.location("/public") todo: what is it?
+        // staticFiles.location("/public") todo: set location for html files
         port(serverPort)
     }
 }
@@ -122,8 +128,8 @@ class DullDataBaseManager : DataBaseManager {
             )
         )
 
-    private val athletes: List<Athlete> =
-        listOf(
+    private val athletes: MutableList<Athlete> =
+        mutableListOf(
             Athlete(
                 "LeBron James",
                 "male",
@@ -171,22 +177,37 @@ class DullDataBaseManager : DataBaseManager {
     }
 
     override fun getAthlete(athleteId: Int): Athlete? {
-        return athletes.getOrNull(athleteId)
+        return athletes.getOrNull(athleteId - 1)
     }
 
     override fun getAccommodation(accommodationId: Int): Accommodation? {
-        return accommodations.getOrNull(accommodationId)
+        return accommodations.getOrNull(accommodationId - 1)
     }
 
     override fun getVolunteer(volunteerId: Int): Volunteer? {
-        return volunteers.getOrNull(volunteerId)
+        return volunteers.getOrNull(volunteerId - 1)
     }
 
     override fun setAthleteInfo(athleteId: Int, accommodationId: Int, volunteerId: Int) {
-        TODO("not implemented")
+        val pos = athleteId - 1
+        val athlete = athletes[pos]
+        val accommodation = accommodations[accommodationId - 1].brief(accommodationId)
+        val volunteer = volunteers[volunteerId - 1].brief(volunteerId)
+
+        athletes[pos] = Athlete(
+            athlete.name,
+            athlete.sex,
+            athlete.height,
+            athlete.weight,
+            athlete.age,
+            accommodation,
+            athlete.country,
+            volunteer
+        )
     }
 }
 
 fun main(args: Array<String>) {
+    // todo: replace dull manager with true one
     Server(DullDataBaseManager()).run()
 }
