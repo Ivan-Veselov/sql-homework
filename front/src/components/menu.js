@@ -20,15 +20,6 @@ const center = {
 
 // Global todo: fix code style
 class UI extends React.Component {
-    renderContent = () => {
-        return (
-            <SpecifiedList
-                data={this.state.table_body}
-                columns={this.state.table_header}
-            />
-        );
-    };
-
     /**
      * Rendering tabs together.
      */
@@ -44,25 +35,28 @@ class UI extends React.Component {
                       name='all_sportsmen'
                       active={activeItem === 'all_sportsmen'}
                       content='Список всех спортсменов'
-                      onClick={() => this.props.selectMenuItem(query.allQueryType.ALL_SPORTSMEN)}
+                      onClick={() => this.props.selectMenuItem(this, 'all_sportsmen',
+                                            query.allQueryType.ALL_SPORTSMEN)}
                     />
 
                     <Menu.Item
                       name='all_accomodations'
                       active={activeItem === 'all_accomodations'}
                       content='Список всех помещений'
-                      onClick={() => this.props.selectMenuItem(query.allQueryType.ALL_ACCOMODATIONS)}
+                      onClick={() => this.props.selectMenuItem(this, 'all_accomodations',
+                                            query.allQueryType.ALL_ACCOMODATIONS)}
                     />
 
                     <Menu.Item
                       name='all_volunteers'
                       active={activeItem === 'all_volunteers'}
                       content='Список всех волонтеров'
-                      onClick={() => this.props.selectMenuItem(query.allQueryType.ALL_VOLUNTEERS)}
+                      onClick={() => this.props.selectMenuItem(this, 'all_volunteers',
+                                            query.allQueryType.ALL_VOLUNTEERS)}
                     />
                 </Menu>
 
-                {this.renderContent()}
+                <SpecifiedList />
             </div>
         );
     };
@@ -72,8 +66,8 @@ class UI extends React.Component {
 // Get apps state and pass it as props to UI
 function mapStateToProps(state) {
     return {
-        table_header: state.table_header,
-        table_body: state.table_body,
+        tableHeader: state.tableHeader,
+        tableBody: state.tableBody,
     };
 }
 

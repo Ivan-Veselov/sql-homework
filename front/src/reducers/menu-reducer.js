@@ -4,8 +4,8 @@ export default function (state = null, action) {
         case 'MENU_SELECTED':
             return {
                 queryType: action.queryType,
-                table_header: action.table_header,
-                table_body: action.table_body
+                table_header: action.tableHeader,
+                table_body: action.tableBody
             };
     }
     return state;

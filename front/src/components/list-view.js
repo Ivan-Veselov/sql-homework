@@ -8,12 +8,12 @@ class SpecifiedList extends React.Component {
     // change with map
     renderTableHeader = () => {
         let cells = [];
-        for (let i = 0; i < this.props.columns.length; i++) {
-            let column_name = this.props.columns[i];
+        for (let index = 0; index < this.props.columns.length; index++) {
+            let columnName = this.props.columns[index];
 
             cells.push(
                 <Table.HeaderCell> 
-                    {column_name} 
+                    {columnName}
                 </Table.HeaderCell>
             );
         }
@@ -27,20 +27,20 @@ class SpecifiedList extends React.Component {
 
     renderTableBody = () => {
         let rows = [];
-        for (let i = 0; i < this.props.data.length; i++) {
-            let current_row = this.props.data[i];
-            let row_cells = [];
-            let row_id = -1;
+        for (let index = 0; index < this.props.data.length; index++) {
+            let currentRow = this.props.data[index];
+            let rowCells = [];
+            let rowId = -1;
 
-            for (let item in current_row) {
+            for (let item in currentRow) {
                 if (item === "id") {
-                    row_id = current_row[item];
+                    rowId = currentRow[item];
                     continue;
                 }
 
-                row_cells.push(
+                rowCells.push(
                     <Table.Cell>
-                        {current_row[item]}
+                        {currentRow[item]}
                     </Table.Cell>
                 );
             }
@@ -48,10 +48,10 @@ class SpecifiedList extends React.Component {
 
             rows.push(
                 <Table.Row
-                    key={i}
-                    onClick={() => this.props.rowReducer(row_id, this.props.queryType)}
+                    key={index}
+                    //onClick={() => this.props.rowReducer(row_id, this.props.queryType)}
                 >
-                    {row_cells}
+                    {rowCells}
                 </Table.Row>
             );
         }
@@ -82,8 +82,8 @@ class SpecifiedList extends React.Component {
 //      > whenever state changes, the SpecifiedList will automatically re-render
 function mapStateToProps(state) {
     return {
-        data: state.data,
-        columns: state.columns,
+        data: state.tableBody,
+        columns: state.tableHeader,
         queryType: state.type
     };
 }

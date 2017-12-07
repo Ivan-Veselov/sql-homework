@@ -20,7 +20,9 @@ export const getQuery = (rowId, getQueryType) => {
 /**
  * @param allQueryType same as get, but "all"
  */
-export const allQuery = (allQueryType) => {
+export const allQuery = (menu, newActiveItem, allQueryType) => {
+    menu.setState({ activeItem: newActiveItem });
+
     let tableHeader = "";
     switch(allQueryType) {
         // wtf?
@@ -60,8 +62,8 @@ export const allQuery = (allQueryType) => {
     return {
         type: 'MENU_SELECTED',
         queryType: allQueryType,
-        table_header: tableHeader,
-        table_body: recievedResponse
+        tableHeader: tableHeader,
+        tableBody: recievedResponse
     }
 };
 
