@@ -1,6 +1,6 @@
 package ru.spbau.mit.bachelors2015
 
-class InvalidIdException(message: String) : Exception(message)
+class InvalidIdException : Exception()
 
 interface DataBaseManager {
     fun allAthletes(accommodationId: Int?) : List<AthleteBrief>
