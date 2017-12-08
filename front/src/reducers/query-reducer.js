@@ -10,5 +10,5 @@ export default function (state = {}, action) {
             break;
     }
 
-    return null;
+    return null; // why it's forbidden to use indefined?
 }

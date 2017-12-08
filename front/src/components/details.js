@@ -4,12 +4,6 @@ import { Table } from 'semantic-ui-react'
 let query = require('../query');
 
 class Details extends React.Component {
-    getTableHeader = () => {
-        return "Sportsmen details";
-        // TODO: case on query type and return appropriate header
-        // TODO: move it to query.js file
-    };
-
     renderDetails = () => {
         let cellNames = query.getCellNames(this.props.queryType);
 
@@ -27,6 +21,8 @@ class Details extends React.Component {
                 </Table.Row>
             );
         }
+
+        return rows;
     };
 
     render() {
@@ -35,7 +31,7 @@ class Details extends React.Component {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell colSpan='2' textAlign='center'>
-                            {this.getTableHeader()}
+                            {query.getDetailTableHeader(this.props.queryType)}
                         </Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
@@ -51,7 +47,10 @@ class Details extends React.Component {
 
 
 function mapStateToProps(state) {
-    return state.rowReducer;
+    return {
+        object: state.rowReducer.object,
+        queryType : state.query
+    }
 }
 
 export default connect(mapStateToProps)(Details);

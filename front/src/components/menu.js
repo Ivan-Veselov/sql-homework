@@ -24,7 +24,6 @@ class UI extends React.Component {
     renderContent = () => {
         let queryType = this.props.queryType;
         if (queryType !== null) {
-            console.log(queryType);
             switch(queryType) {
                 case query.allQueryType.ALL_SPORTSMEN:
                 case query.allQueryType.ALL_ACCOMMODATIONS:

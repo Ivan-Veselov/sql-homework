@@ -96,8 +96,8 @@ function mapStateToProps(state) {
 }
 
 // Get actions and pass them as props to to SpecifiedList
-//      > now SpecifiedList has this.props.selectCell
-function matchDispatchToProps(dispatch){
+//      > now SpecifiedList has this.props.selectRow
+function matchDispatchToProps(dispatch) {
     return bindActionCreators({selectRow : getQuery}, dispatch);
 }
 

@@ -24,6 +24,19 @@ export const getQuery = (id, getQueryType) => {
             recievedResponse = responses.get_volunteer;
             break;
     }
+    switch (getQueryType) {
+        case query.getQueryType.GET_ACCOMMODATION:
+            recievedResponse = responses.get_accommodation;
+            break;
+
+        case query.getQueryType.GET_SPORTSMAN:
+            recievedResponse = responses.get_sportsman;
+            break;
+
+        case query.getQueryType.GET_VOLUNTEER:
+            recievedResponse = responses.get_volunteer;
+            break;
+    }
     //sendQuery(getQueryType, `id=${id}`);
 
     let data = {
