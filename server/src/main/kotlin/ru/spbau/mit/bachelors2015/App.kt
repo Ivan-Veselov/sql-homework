@@ -179,19 +179,19 @@ class DullDataBaseManager : DataBaseManager {
 
     override fun getAthlete(athleteId: Int): Athlete {
         return athletes.getOrElse(athleteId - 1) {
-            throw InvalidIdException()
+            throw InvalidIdException(athleteId, "athlete")
         }
     }
 
     override fun getAccommodation(accommodationId: Int): Accommodation {
         return accommodations.getOrElse(accommodationId - 1) {
-            throw InvalidIdException()
+            throw InvalidIdException(accommodationId, "accommodation")
         }
     }
 
     override fun getVolunteer(volunteerId: Int): Volunteer {
         return volunteers.getOrElse(volunteerId - 1) {
-            throw InvalidIdException()
+            throw InvalidIdException(volunteerId, "volunteer")
         }
     }
 
