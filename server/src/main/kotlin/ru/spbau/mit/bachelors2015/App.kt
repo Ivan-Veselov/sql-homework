@@ -5,12 +5,12 @@ import spark.Request
 import spark.Response
 import spark.Spark.*
 
-class NoRequiredParamException : Exception()
+class NoRequiredParamException(paramName: String) : Exception("No required parameter '$paramName'")
 
-// todo: handle NumberFormatException
 // todo: handle NoRequiredParamException
+// todo: handle NumberFormatException
 fun Request.getRequiredIntParam(name: String) : Int {
-    val param = this.queryParams(name) ?: throw NoRequiredParamException()
+    val param = this.queryParams(name) ?: throw NoRequiredParamException(name)
 
     return param.toInt()
 }
