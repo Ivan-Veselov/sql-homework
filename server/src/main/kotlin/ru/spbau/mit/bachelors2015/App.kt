@@ -173,16 +173,22 @@ class DullDataBaseManager : DataBaseManager {
         return (1..volunteers.size).map { volunteers[it - 1].brief(it) }
     }
 
-    override fun getAthlete(athleteId: Int): Athlete? {
-        return athletes.getOrNull(athleteId - 1)
+    override fun getAthlete(athleteId: Int): Athlete {
+        return athletes.getOrElse(athleteId - 1) {
+            throw InvalidIdException("Invalid athlete id: $athleteId")
+        }
     }
 
-    override fun getAccommodation(accommodationId: Int): Accommodation? {
-        return accommodations.getOrNull(accommodationId - 1)
+    override fun getAccommodation(accommodationId: Int): Accommodation {
+        return accommodations.getOrElse(accommodationId - 1) {
+            throw InvalidIdException("Invalid accommodation id: $accommodationId")
+        }
     }
 
-    override fun getVolunteer(volunteerId: Int): Volunteer? {
-        return volunteers.getOrNull(volunteerId - 1)
+    override fun getVolunteer(volunteerId: Int): Volunteer {
+        return volunteers.getOrElse(volunteerId - 1) {
+            throw InvalidIdException("Invalid volunteer id: $volunteerId")
+        }
     }
 
     override fun setAthleteInfo(athleteId: Int, accommodationId: Int?, volunteerId: Int?) {
