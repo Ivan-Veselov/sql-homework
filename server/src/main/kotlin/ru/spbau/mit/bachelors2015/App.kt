@@ -7,19 +7,17 @@ import spark.Spark.*
 
 class NoRequiredParamException(paramName: String) : Exception("No required parameter '$paramName'")
 
-// todo: handle NoRequiredParamException
-// todo: handle NumberFormatException
 fun Request.getRequiredIntParam(name: String) : Int {
+    // todo: wrap NumberFormatException
     val param = this.queryParams(name) ?: throw NoRequiredParamException(name)
-
     return param.toInt()
 }
 
 fun Request.getOptionalIntParam(name: String) : Int? {
+    // todo: wrap NumberFormatException
     return this.queryParams(name)?.toInt()
 }
 
-// todo: error responses for incorrect api usage
 class Server(database: DataBaseManager) {
     private val serverPort = 8080
 
@@ -81,13 +79,13 @@ class Server(database: DataBaseManager) {
     fun run() {
         init()
 
-        get("/sportsman/all", sportsmanAll)
-        get("/accommodation/all", accommodationAll)
-        get("volunteer/all", volunteerAll)
-        get("/sportsman/get", sportsmanGet)
-        get("/accommodation/get", accommodationGet)
-        get("/volunteer/get", volunteerGet)
-        get("/sportsman/set", sportsmanSet)
+        safeGet("/sportsman/all", sportsmanAll)
+        safeGet("/accommodation/all", accommodationAll)
+        safeGet("volunteer/all", volunteerAll)
+        safeGet("/sportsman/get", sportsmanGet)
+        safeGet("/accommodation/get", accommodationGet)
+        safeGet("/volunteer/get", volunteerGet)
+        safeGet("/sportsman/set", sportsmanSet)
     }
 
     private fun init() {
@@ -97,6 +95,21 @@ class Server(database: DataBaseManager) {
 
         // staticFiles.location("/public") todo: set location for html files
         port(serverPort)
+    }
+
+    private fun safeGet(path: String, route: (Request, Response) -> Any?) {
+        get(path) {
+            request, response ->
+            try {
+                route(request, response)
+            } catch (e: NoRequiredParamException) {
+            } catch (e: NumberFormatException) {
+            } catch (e: InvalidIdException) {
+            }
+
+            // todo: write catch blocks (probably should build some hierarchy)
+            // todo: might be a good idea to put serialization here
+        }
     }
 }
 
