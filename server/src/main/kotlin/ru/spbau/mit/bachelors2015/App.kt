@@ -5,12 +5,18 @@ import spark.Request
 import spark.Response
 import spark.Spark.*
 
-fun Request.getIntParam(name: String) : Int? {
-    return try {
-        this.queryParams(name)?.toInt()
-    } catch(_: NumberFormatException) {
-        null
-    }
+class NoRequiredParamException : Exception()
+
+// todo: handle NumberFormatException
+// todo: handle NoRequiredParamException
+fun Request.getRequiredIntParam(name: String) : Int {
+    val param = this.queryParams(name) ?: throw NoRequiredParamException()
+
+    return param.toInt()
+}
+
+fun Request.getOptionalIntParam(name: String) : Int? {
+    return this.queryParams(name)?.toInt()
 }
 
 // todo: error responses for incorrect api usage
@@ -21,7 +27,7 @@ class Server(database: DataBaseManager) {
 
     private val sportsmanAll: (Request, Response) -> Any? = {
         request, _ ->
-        val accommodationId = request.getIntParam("accommodation_id")
+        val accommodationId = request.getOptionalIntParam("accommodation_id")
         val athletes = database.allAthletes(accommodationId)
 
         jsonSerializer.toJson(athletes)
@@ -37,24 +43,24 @@ class Server(database: DataBaseManager) {
 
     private val sportsmanGet: (Request, Response) -> Any? = {
         request, _ ->
-        val athleteId = request.getIntParam("id")
-        val athlete = athleteId?.let { database.getAthlete(it) }
+        val athleteId = request.getRequiredIntParam("id")
+        val athlete = database.getAthlete(athleteId)
 
         jsonSerializer.toJson(athlete)
     }
 
     private val accommodationGet: (Request, Response) -> Any? = {
         request, _ ->
-        val accommodationId = request.getIntParam("id")
-        val accommodation = accommodationId?.let { database.getAccommodation(it) }
+        val accommodationId = request.getRequiredIntParam("id")
+        val accommodation = database.getAccommodation(accommodationId)
 
         jsonSerializer.toJson(accommodation)
     }
 
     private val volunteerGet: (Request, Response) -> Any? = {
         request, _ ->
-        val volunteerId = request.getIntParam("id")
-        val volunteer = volunteerId?.let { database.getVolunteer(it) }
+        val volunteerId = request.getRequiredIntParam("id")
+        val volunteer = database.getVolunteer(volunteerId)
 
         jsonSerializer.toJson(volunteer)
     }
@@ -62,13 +68,11 @@ class Server(database: DataBaseManager) {
     private val sportsmanSet: (Request, Response) -> Any? = {
         request, _ ->
 
-        val athleteId = request.getIntParam("id")
-        val accommodationId = request.getIntParam("accommodation_id")
-        val volunteerId = request.getIntParam("volunteer_id")
+        val athleteId = request.getRequiredIntParam("id")
+        val accommodationId = request.getOptionalIntParam("accommodation_id")
+        val volunteerId = request.getOptionalIntParam("volunteer_id")
 
-        if (athleteId != null) {
-            database.setAthleteInfo(athleteId, accommodationId, volunteerId)
-        }
+        database.setAthleteInfo(athleteId, accommodationId, volunteerId)
 
         // response.redirect("/all") // todo: looks weird; don't understand what this is
         null
