@@ -5,17 +5,17 @@ let query = require('../query');
 
 class Details extends React.Component {
     renderDetails = () => {
-        let cellNames = query.getCellNames(this.props.queryType);
+        let cellNames = query.getCellNames(this.state.queryType);
 
         let detailIndex = 0;
         let rows = [];
-        for (let item in this.props.object) {
-            let detail = this.props.object[item];
+        for (let item in this.state.object) {
+            let detail = this.state.object[item];
             let detailName = cellNames[detailIndex];
             detailIndex++;
 
             rows.push(
-                <Table.Row>
+                <Table.Row key={detailIndex}>
                     <Table.Cell textAlign='center'> {detailName} </Table.Cell>
                     <Table.Cell textAlign='center'> {detail} </Table.Cell>
                 </Table.Row>
@@ -31,7 +31,7 @@ class Details extends React.Component {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell colSpan='2' textAlign='center'>
-                            {query.getDetailTableHeader(this.props.queryType)}
+                            {query.getDetailTableHeader(this.state.queryType)}
                         </Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
@@ -45,12 +45,4 @@ class Details extends React.Component {
     };
 }
 
-
-function mapStateToProps(state) {
-    return {
-        object: state.rowReducer.object,
-        queryType : state.query
-    }
-}
-
-export default connect(mapStateToProps)(Details);
+export default Details;

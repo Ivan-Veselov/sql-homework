@@ -1,19 +1,20 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Icon } from 'semantic-ui-react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {getQuery} from '../actions/index';
+import {getQuery, getSportsmanAccommodation} from '../actions/index';
+let query = require('../query');
 
 class SpecifiedList extends React.Component {
     // TODO : change with map
     // TODO : fix child key prop
     renderTableHeader = () => {
         let cells = [];
-        for (let index = 0; index < this.props.columns.length; index++) {
-            let columnName = this.props.columns[index];
+        for (let index = 0; index < this.state.columns.length; index++) {
+            let columnName = this.state.columns[index];
 
             cells.push(
-                <Table.HeaderCell>
+                <Table.HeaderCell key={index}>
                     {columnName}
                 </Table.HeaderCell>
             );
@@ -28,8 +29,8 @@ class SpecifiedList extends React.Component {
 
     renderTableBody = () => {
         let rows = [];
-        for (let index = 0; index < this.props.data.length; index++) {
-            let currentRow = this.props.data[index];
+        for (let index = 0; index < this.state.data.length; index++) {
+            let currentRow = this.state.data[index];
             let rowCells = [];
             let objectId = -1;
 
@@ -40,19 +41,22 @@ class SpecifiedList extends React.Component {
                 }
 
                 rowCells.push(
-                    <Table.Cell>
+                    <Table.Cell key={item}>
                         {currentRow[item]}
                     </Table.Cell>
                 );
             }
 
-            let allQuery = this.props.queryType;
+            let allQuery = this.state.queryType;
             let getQuery = this.createGetQuery(allQuery);
+            let paramFunctions = [
+                this.state.selectRow(objectId, getQuery),
+                this.state.accommodationButton(objectId)
+            ];
+
+            rowCells.push(getClickableButtons(allQuery, paramFunctions));
             rows.push(
-                <Table.Row
-                    key={index}
-                    onClick={() => this.props.selectRow(objectId, getQuery)}
-                >
+                <Table.Row key={index}>
                     {rowCells}
                 </Table.Row>
             );
@@ -70,7 +74,6 @@ class SpecifiedList extends React.Component {
     };
 
     render() {
-
         return (
             <div style={{ width:"60%" }}>
                 <Table selectable singleLine compact size="large">
@@ -85,22 +88,25 @@ class SpecifiedList extends React.Component {
     }
 }
 
-// Get apps state and pass it as props to SpecifiedList
-//      > whenever state changes, the SpecifiedList will automatically re-render
-function mapStateToProps(state) {
-    return {
-        columns : state.menuReducer.tableHeader,
-        data: state.menuReducer.tableBody,
-        queryType: state.query
+let getClickableButtons = (queryType, clickFunctions) => {
+    let getInfo = clickFunctions[0];
+    if (queryType === query.getQueryType.GET_ACCOMMODATION) {
+        let getSportsmanAccommodation = clickFunctions[1];
+        return (
+            <Table.Cell>
+                <Icon name='hotel' onClick={() => getSportsmanAccommodation}/>
+                <Icon name='info circle' onClick={() => getInfo}/>
+            </Table.Cell>
+        );
     }
-}
 
-// Get actions and pass them as props to to SpecifiedList
-//      > now SpecifiedList has this.props.selectRow
-function matchDispatchToProps(dispatch) {
-    return bindActionCreators({selectRow : getQuery}, dispatch);
-}
+    return (
+        <Table.Cell>
+            <Icon name='info circle' onClick={() => getInfo}/>
+        </Table.Cell>
+    );
+};
 
 // We don't want to return the plain SpecifiedList (component) anymore, we want to return the smart Container
 //      > SpecifiedList is now aware of state and actions
-export default connect(mapStateToProps, matchDispatchToProps)(SpecifiedList);
+export default SpecifiedList;
