@@ -5,9 +5,8 @@ import spark.Request
 import spark.Response
 import spark.Spark.*
 
-// todo: looks similar to the next function
-fun Request.getRequiredIntParam(name: String) : Int {
-    val param = this.queryParams(name) ?: throw NoRequiredParamException(name)
+fun Request.getIntParam(name: String) : Int? {
+    val param = this.queryParams(name) ?: return null
 
     try {
         return param.toInt()
@@ -16,14 +15,12 @@ fun Request.getRequiredIntParam(name: String) : Int {
     }
 }
 
-fun Request.getOptionalIntParam(name: String) : Int? {
-    val param = this.queryParams(name) ?: return null
+fun Request.getRequiredIntParam(name: String) : Int {
+    return this.getIntParam(name) ?: throw NoRequiredParamException(name)
+}
 
-    try {
-        return param.toInt()
-    } catch (_: NumberFormatException) {
-        throw IntParsingException(param)
-    }
+fun Request.getOptionalIntParam(name: String) : Int? {
+    return this.getIntParam(name)
 }
 
 class Server(database: DataBaseManager) {
