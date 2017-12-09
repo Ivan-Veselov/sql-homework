@@ -1,10 +1,5 @@
 package ru.spbau.mit.bachelors2015
 
-class InvalidIdException(
-    id: Int,
-    tableName: String
-) : Exception("Invalid id for table '$tableName': $id")
-
 interface DataBaseManager {
     fun allAthletes(accommodationId: Int?) : List<AthleteBrief>
 

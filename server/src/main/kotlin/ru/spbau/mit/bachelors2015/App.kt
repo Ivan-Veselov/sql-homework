@@ -5,17 +5,25 @@ import spark.Request
 import spark.Response
 import spark.Spark.*
 
-class NoRequiredParamException(paramName: String) : Exception("No required parameter '$paramName'")
-
+// todo: looks similar to the next function
 fun Request.getRequiredIntParam(name: String) : Int {
-    // todo: wrap NumberFormatException
     val param = this.queryParams(name) ?: throw NoRequiredParamException(name)
-    return param.toInt()
+
+    try {
+        return param.toInt()
+    } catch (_: NumberFormatException) {
+        throw IntParsingException(param)
+    }
 }
 
 fun Request.getOptionalIntParam(name: String) : Int? {
-    // todo: wrap NumberFormatException
-    return this.queryParams(name)?.toInt()
+    val param = this.queryParams(name) ?: return null
+
+    try {
+        return param.toInt()
+    } catch (_: NumberFormatException) {
+        throw IntParsingException(param)
+    }
 }
 
 class Server(database: DataBaseManager) {
@@ -102,12 +110,10 @@ class Server(database: DataBaseManager) {
             request, response ->
             try {
                 route(request, response)
-            } catch (e: NoRequiredParamException) {
-            } catch (e: NumberFormatException) {
-            } catch (e: InvalidIdException) {
+            } catch (e: InvalidQueryException) {
+                // todo: write catch block
             }
 
-            // todo: write catch blocks (probably should build some hierarchy)
             // todo: might be a good idea to put serialization here
         }
     }
