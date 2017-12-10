@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from "react-redux";
 import { Table } from 'semantic-ui-react'
 let query = require('../query');
 

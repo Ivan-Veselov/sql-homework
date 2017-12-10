@@ -3,7 +3,7 @@ import { Menu } from 'semantic-ui-react'
 import SpecifiedList from './list-view';
 import Details from './details'
 import {connect} from "react-redux";
-import {allQuery} from "../actions";
+import {allQuery, getQuery, getSportsmanAccommodation} from "../actions";
 import {bindActionCreators} from "redux";
 let query = require('../query');
 
@@ -24,20 +24,45 @@ class UI extends React.Component {
     renderContent = () => {
         let queryType = this.props.queryType;
         if (queryType !== null) {
+            let data = null;
+            let accommodation = this.props.accommodation;
+            let accommodationSportsmenClicked = accommodation !== null &&
+            queryType == query.getQueryType.GET_SPORTSMAN;
+
+            if (accommodationSportsmenClicked) {
+                data = this.props.accommodation;
+            } else {
+                data = this.props.menuReducer;
+            }
+            let columns = query.getCellNames(queryType);
+            let accommodationButton = undefined;
+            if (query.allQueryType.ALL_ACCOMMODATIONS) {
+                accommodationButton = this.props.selectAccommodationSportsmen;
+            }
+
             switch(queryType) {
                 case query.allQueryType.ALL_SPORTSMEN:
                 case query.allQueryType.ALL_ACCOMMODATIONS:
                 case query.allQueryType.ALL_VOLUNTEERS:
                     return (
-                        <SpecifiedList />
+                        <SpecifiedList
+                            columns={columns}
+                            data={data}
+                            queryType={queryType}
+                            getInfo={getQuery}
+                            accommodationButton={accommodationButton}
+                        />
                     );
 
                 case query.getQueryType.GET_SPORTSMAN:
                 case query.getQueryType.GET_ACCOMMODATION:
                 case query.getQueryType.GET_VOLUNTEER:
                     return (
-                        <Details />
-                    );    
+                        <Details
+                            queryType={queryType}
+                            object={this.state.rowReducer}
+                        />
+                    );
             }
         }
     };
@@ -93,12 +118,19 @@ function mapStateToProps(state) {
     return {
         activeItem : state.menuReducer.activeItem,
         queryType : state.query
+        rowReducer : state.rowReducer,
+        menuReducer : state.menuReducer,
+        accommodation:  state.accommodationReducer
     }
 }
 
 // Get actions and pass them as props to UI
 function matchDispatchToProps(dispatch){
-    return bindActionCreators({selectMenuItem : allQuery}, dispatch);
+    return bindActionCreators({
+        selectMenuItem : allQuery,
+        selectAccommodationSportsmen : getSportsmanAccommodation,
+        getQuery
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(UI);

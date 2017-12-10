@@ -1,8 +1,5 @@
 import React from 'react';
 import { Table, Icon } from 'semantic-ui-react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {getQuery, getSportsmanAccommodation} from '../actions/index';
 let query = require('../query');
 
 class SpecifiedList extends React.Component {
@@ -13,7 +10,6 @@ class SpecifiedList extends React.Component {
             columns : this.props.columns,
             data : this.props.data,
             queryType : this.props.queryType,
-            columns : this.props.columns,
 
             getInfo : this.props.getInfo,
             accommodationButton : this.props.accommodationButton
@@ -121,6 +117,5 @@ let getClickableButtons = (queryType, clickFunctions) => {
     );
 };
 
-// We don't want to return the plain SpecifiedList (component) anymore, we want to return the smart Container
-//      > SpecifiedList is now aware of state and actions
+
 export default SpecifiedList;
