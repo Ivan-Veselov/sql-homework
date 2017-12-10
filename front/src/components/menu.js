@@ -2,9 +2,6 @@ import React from 'react';
 import { Menu } from 'semantic-ui-react'
 import SpecifiedList from './list-view';
 import Details from './details'
-import {connect} from "react-redux";
-import {allQuery, getQuery, getSportsmanAccommodation} from "../actions";
-import {bindActionCreators} from "redux";
 let query = require('../query');
 
 /**
@@ -32,9 +29,9 @@ class UI extends React.Component {
             if (accommodationSportsmenClicked) {
                 data = this.props.accommodation;
             } else {
-                data = this.props.menuReducer;
+                data = this.props.menuReducer.tableBody;
             }
-            let columns = query.getCellNames(queryType);
+            let columns = this.props.menuReducer.tableHeader;
             let accommodationButton = undefined;
             if (query.allQueryType.ALL_ACCOMMODATIONS) {
                 accommodationButton = this.props.selectAccommodationSportsmen;
@@ -112,25 +109,4 @@ class UI extends React.Component {
     };
 }
 
-
-// Get apps state and pass it as props to UI
-function mapStateToProps(state) {
-    return {
-        activeItem : state.menuReducer.activeItem,
-        queryType : state.query
-        rowReducer : state.rowReducer,
-        menuReducer : state.menuReducer,
-        accommodation:  state.accommodationReducer
-    }
-}
-
-// Get actions and pass them as props to UI
-function matchDispatchToProps(dispatch){
-    return bindActionCreators({
-        selectMenuItem : allQuery,
-        selectAccommodationSportsmen : getSportsmanAccommodation,
-        getQuery
-    }, dispatch);
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(UI);
+export default UI;

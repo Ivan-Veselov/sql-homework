@@ -60,7 +60,7 @@ class SpecifiedList extends React.Component {
             let allQuery = this.state.queryType;
             let getQuery = this.createGetQuery(allQuery);
             let paramFunctions = [
-                this.state.selectRow(objectId, getQuery),
+                this.state.getInfo(objectId, getQuery),
                 this.state.accommodationButton(objectId)
             ];
 
