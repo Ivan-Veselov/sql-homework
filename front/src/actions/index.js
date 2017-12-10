@@ -12,19 +12,6 @@ export function getQuery(id, getQueryType) {
     };
 
     switch (getQueryType) {
-        case query.allQueryType.GET_ACCOMMODATION:
-            recievedResponse = responses.get_accommodation;
-            break;
-
-        case query.allQueryType.GET_SPORTSMAN:
-            recievedResponse = responses.get_sportsman;
-            break;
-
-        case query.allQueryType.GET_VOLUNTEER:
-            recievedResponse = responses.get_volunteer;
-            break;
-    }
-    switch (getQueryType) {
         case query.getQueryType.GET_ACCOMMODATION:
             recievedResponse = responses.get_accommodation;
             break;
@@ -48,11 +35,7 @@ export function getQuery(id, getQueryType) {
     return data;
 };
 
-/**
- * @param allQueryType same as get, but "all"
- * @param newActiveItem active menu item
- */
-export function allQuery(allQueryType) {
+function getTableHeader(allQueryType) {
     let tableHeader = "";
     switch (allQueryType) {
         case query.allQueryType.ALL_ACCOMMODATIONS:
@@ -66,6 +49,16 @@ export function allQuery(allQueryType) {
         case query.allQueryType.ALL_VOLUNTEERS:
             tableHeader = ["Имя Фамилия", ""];
     }
+
+    return tableHeader;
+}
+
+/**
+ * @param allQueryType same as get, but "all"
+ * @param newActiveItem active menu item
+ */
+export function allQuery(allQueryType) {
+    let tableHeader = getTableHeader(allQueryType);
 
     let recievedResponse = {};
     let handler = response => {
@@ -102,14 +95,17 @@ export function getSportsmanAccommodation(accommodationId) {
         recievedResponse = response;
     };
 
-    let params = `accomodation_id=${accommodationId}`
+    let params = `accomodation_id=${accommodationId}`;
+    let queryType = query.allQueryType.ALL_SPORTSMEN;
     //sendQuery(query.getQueryType.GET_SPORTSMAN, params);
 
+    let tableHeader = getTableHeader(queryType);
     recievedResponse = responses.all_sportsmen;
 
     let data = {
-        queryType: query.getQueryType.GET_SPORTSMAN,
-        object: recievedResponse
+        queryType,
+        tableBody: recievedResponse,
+        tableHeader
     };
 
     return data;

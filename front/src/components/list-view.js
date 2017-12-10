@@ -54,7 +54,8 @@ class SpecifiedList extends React.Component {
                 this.props.accommodationButton
             ];
 
-            rowCells.push(getClickableButtons(allQuery, paramFunctions, objectId, getQuery));
+            rowCells.push(getClickableButtons(this.props.menu,
+                            allQuery, paramFunctions, objectId, getQuery));
             rows.push(
                 <Table.Row key={index.toString()}>
                     {rowCells}
@@ -76,8 +77,10 @@ class SpecifiedList extends React.Component {
 
     render() {
         return (
-            <div style={{ width:"60%" }}>
-                <Table selectable singleLine compact size="large">
+            <div style={{ display: "flex",
+                          justifyContent: "center",
+                          width:"60%" }}>
+                <Table singleLine compact size="large">
                     <Table.Header>
                         {this.renderTableHeader()}
                     </Table.Header>
@@ -89,22 +92,48 @@ class SpecifiedList extends React.Component {
     }
 }
 
-let getClickableButtons = (queryType, clickFunctions, objectId, getQuery) => {
+function handleHotelClick(menu, response) {
+    // sorry...
+    menu.setState({
+        accommodation: true,
+        queryType: response.queryType,
+        tableHeader: response.tableHeader,
+        tableBody: response.tableBody
+    });
+};
+
+function handleGetInfoClick(menu, response) {
+    menu.setState({
+        accommodation: false,
+        queryType: response.queryType,
+        objectInformation: response.object
+    });
+};
+
+let getClickableButtons = (menu, queryType, clickFunctions, objectId, getQuery) => {
     let getInfo = clickFunctions[0];
+    // TODO : better code
     if (queryType === query.allQueryType.ALL_ACCOMMODATIONS) {
         let getSportsmanAccommodation = clickFunctions[1];
-        console.log("hotel?");
         return (
             <Table.Cell key={"icons key"}>
-                <Icon name='hotel' onClick={() => getSportsmanAccommodation(objectId)}/>
-                <Icon name='info circle' onClick={() => getInfo(objectId, getQuery)}/>
+                <Icon name='hotel' onClick={() =>
+                    handleHotelClick(menu, getSportsmanAccommodation(objectId))
+                }/>
+
+
+                <Icon name='info circle' onClick={() =>
+                    handleGetInfoClick(menu, getInfo(objectId, getQuery))
+                }/>
             </Table.Cell>
         );
     }
 
     return (
         <Table.Cell key={"icons key"}>
-            <Icon name='info circle' onClick={() => getInfo}/>
+            <Icon name='info circle' onClick={() =>
+                handleGetInfoClick(menu, getInfo(objectId, getQuery))
+            }/>
         </Table.Cell>
     );
 };

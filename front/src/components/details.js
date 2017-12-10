@@ -5,20 +5,15 @@ let query = require('../query');
 class Details extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            object: this.props.object,
-            queryType: this.props.queryType,
-        }
     }
 
     renderDetails = () => {
-        let cellNames = query.getCellNames(this.state.queryType);
+        let cellNames = query.getCellNames(this.props.queryType);
 
         let detailIndex = 0;
         let rows = [];
-        for (let item in this.state.object) {
-            let detail = this.state.object[item];
+        for (let item in this.props.object) {
+            let detail = this.props.object[item];
             let detailName = cellNames[detailIndex];
             detailIndex++;
 
@@ -39,7 +34,7 @@ class Details extends React.Component {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell colSpan='2' textAlign='center'>
-                            {query.getDetailTableHeader(this.state.queryType)}
+                            {query.getDetailTableHeader(this.props.queryType)}
                         </Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>

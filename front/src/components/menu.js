@@ -1,7 +1,8 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react';
 import SpecifiedList from './list-view';
-import Details from './details'
+import Details from './details';
+import Sportsman from './sportsman';
 import { getQuery, allQuery, getSportsmanAccommodation } from '../actions';
 let query = require('../query');
 
@@ -11,7 +12,6 @@ let query = require('../query');
 const center = {
   display: "flex",
   flexDirection: "column",
-  flexWrap: "wrap",
   justifyContent: "center",
   alignItems: "center",
   marginBottom: "20px",
@@ -26,7 +26,8 @@ class UI extends React.Component {
             queryType: null,
             tableBody: null,
             tableHeader: null,
-            accommodation: null,
+            accommodation: false,
+            objectInformation: null,
 
             selectMenuItem : allQuery,
             getQuery,
@@ -43,7 +44,7 @@ class UI extends React.Component {
 
         let data = null;
         let accommodation = this.state.accommodation;
-        let accommodationSportsmenClicked = accommodation !== undefined &&
+        let accommodationSportsmenClicked = accommodation &&
         queryType === query.getQueryType.GET_SPORTSMAN;
 
         if (accommodationSportsmenClicked) {
@@ -56,7 +57,7 @@ class UI extends React.Component {
         if (query.allQueryType.ALL_ACCOMMODATIONS) {
             accommodationButton = this.state.getSportsmanAccommodation;
         }
-
+        
         switch(queryType) {
             case query.allQueryType.ALL_SPORTSMEN:
             case query.allQueryType.ALL_ACCOMMODATIONS:
@@ -68,20 +69,30 @@ class UI extends React.Component {
                         queryType={queryType}
                         getInfo={this.state.getQuery}
                         accommodationButton={accommodationButton}
+                        menu={this}
                     />
                 );
                 break;
 
-            case query.getQueryType.GET_SPORTSMAN:
             case query.getQueryType.GET_ACCOMMODATION:
             case query.getQueryType.GET_VOLUNTEER:
                 return (
                     <Details
                         queryType={queryType}
-                        object={this.state.rowReducer}
+                        object={this.state.objectInformation}
                     />
                 );
                 break;
+
+            case query.getQueryType.GET_SPORTSMAN:
+            return (
+                <Sportsman
+                    queryType={queryType}
+                    object={this.state.objectInformation}
+                />
+            );
+            break;
+
         }
     };
 
@@ -92,7 +103,7 @@ class UI extends React.Component {
         this.setState({
             tableBody : data.tableBody,
             tableHeader : data.tableHeader,
-            accommodation : null,
+            accommodation : false,
             activeItem : item,
             queryType : queryType
         });
