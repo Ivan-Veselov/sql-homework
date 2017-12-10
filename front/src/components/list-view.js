@@ -47,8 +47,19 @@ class SpecifiedList extends React.Component {
                 );
             }
 
+            if (this.props.onRowClick !== undefined) {
+                rows.push(
+                    <Table.Row key={index.toString()}
+                                onClick={() => this.props.onRowClick(index)}>
+                        {rowCells}
+                    </Table.Row>
+                );
+
+                continue;
+            }
+
             let allQuery = this.props.queryType;
-            let getQuery = this.createGetQuery(allQuery);
+            let getQuery = query.createGetQuery(allQuery);
             let paramFunctions = [
                 this.props.getInfo,
                 this.props.accommodationButton
@@ -56,6 +67,7 @@ class SpecifiedList extends React.Component {
 
             rowCells.push(getClickableButtons(this.props.menu,
                             allQuery, paramFunctions, objectId, getQuery));
+
             rows.push(
                 <Table.Row key={index.toString()}>
                     {rowCells}
@@ -71,16 +83,13 @@ class SpecifiedList extends React.Component {
         );
     };
 
-    createGetQuery = (allQuery) => {
-        return allQuery.replace("all", "get");
-    };
-
     render() {
         return (
             <div style={{ display: "flex",
                           justifyContent: "center",
                           width:"60%" }}>
-                <Table singleLine compact size="large">
+                <Table selectable={this.props.onRowClick !== undefined}
+                        singleLine compact size="large">
                     <Table.Header>
                         {this.renderTableHeader()}
                     </Table.Header>

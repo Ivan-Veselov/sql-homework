@@ -21,6 +21,10 @@ class UI extends React.Component {
     constructor() {
         super();
 
+        this.initState();
+    }
+
+    initState = () => {
         this.state = {
             activeItem: null,
             queryType: null,
@@ -32,7 +36,7 @@ class UI extends React.Component {
             selectMenuItem : allQuery,
             getQuery,
             getSportsmanAccommodation
-        }
+        };
     }
 
     renderContent = () => {
@@ -89,6 +93,7 @@ class UI extends React.Component {
                 <Sportsman
                     queryType={queryType}
                     object={this.state.objectInformation}
+                    menu={this}
                 />
             );
             break;
@@ -110,6 +115,21 @@ class UI extends React.Component {
 
         //console.log(this.state);
     };
+
+    showError = (message) => {
+        if (message === "") {
+            return;
+        }
+
+        this.initState();
+
+        return (
+            <div>
+                <h2> Произошла ошибка! </h2>
+                <h3> {message} </h3>
+            </div>
+        );
+    }
 
     /**
      * Rendering tabs together.
@@ -152,6 +172,7 @@ class UI extends React.Component {
                 </Menu>
 
                 {this.renderContent()}
+                {this.showError("")}
             </div>
         );
     };

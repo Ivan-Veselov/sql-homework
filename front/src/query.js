@@ -3,13 +3,13 @@ let port = 1234;
 
 let allQueryType = {
     ALL_SPORTSMEN: 'sportsman/all',
-    ALL_ACCOMMODATIONS: 'accomodation/all',
+    ALL_ACCOMMODATIONS: 'accommodation/all',
     ALL_VOLUNTEERS: 'volunteers/all',
 };
 
 let getQueryType = {
     GET_SPORTSMAN: 'sportsman/get',
-    GET_ACCOMMODATION: 'accomodation/get',
+    GET_ACCOMMODATION: 'accommodation/get',
     GET_VOLUNTEER: 'volunteers/get',
 };
 
@@ -29,6 +29,10 @@ let getDetailTableHeader = (queryType) => {
         case getQueryType.GET_VOLUNTEER:
             return "Информация о волонтере";
     }
+};
+
+let createGetQuery = (allQuery) => {
+    return allQuery.replace("all", "get");
 };
 
 let getCellNames = (queryType) => {
@@ -65,5 +69,6 @@ module.exports = {
     setQueryType,
     getCellNames,
     getDetailTableHeader,
+    createGetQuery,
     sendQuery
 };

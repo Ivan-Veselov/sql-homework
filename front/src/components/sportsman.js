@@ -1,6 +1,8 @@
 import React from 'react';
 import Details from './details';
-import { Button } from 'semantic-ui-react'
+import SpecifiedList from './list-view';
+import { Button } from 'semantic-ui-react';
+import { allQuery, getQuery } from '../actions';
 let query = require('../query');
 
 class Sportsman extends React.Component {
@@ -17,13 +19,61 @@ class Sportsman extends React.Component {
         this.state = {
             sportsman,
             volunteer,
-            accommodation
+            accommodation,
+            choosing: false
         }
+    }
+
+    onRowClick = (id) => {
+        let createdGetQuery = query.createGetQuery(this.state.queryType);
+        let response = getQuery(id, createGetQuery);
+
+        let sportsmanId = `$id=${this.state.sportsman.id}`;
+        let object = response.object;
+        let params = "";
+
+        switch (createdGetQuery) {
+            case query.getQueryType.GET_ACCOMMODATION:
+                this.setState({accommodation : object});
+                let accommodationId = `$accommodation_id=${id}`;
+                let volunteerId = `$volunteer_id=${this.state.volunteer.id}`;
+                params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
+                break;
+
+            case query.getQueryType.GET_VOLUNTEER:
+                this.setState({volunteer : object});
+                let accommodationId = `$accommodation_id=${this.state.accommodation.id}`;
+                let volunteerId = `$volunteer_id=${id}`;
+                params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
+                break;
+        }
+
+        let handler = response => {
+            let menu = this.props.menu;
+
+            if (response.error !== undefined) {
+                menu.showError(response.message);
+            }
+
+            recievedResponse = response;
+        };
+        // sendQuery(query.setQueryType.SET_SPORTSMEN, params, handler)
+        this.setState({choosing : false})
+    }
+
+    handleButtonClick = (queryType) => {
+        let response = allQuery(queryType);
+
+        this.setState({
+            choosing: true,
+            data: response.tableBody,
+            columns: response.tableHeader,
+            queryType
+        });
     }
 
     renderButton = (queryType) => {
         let text = "";
-
 
         switch (queryType) {
             case query.getQueryType.GET_SPORTSMAN:
@@ -35,12 +85,14 @@ class Sportsman extends React.Component {
                 break;
 
             case query.getQueryType.GET_VOLUNTEER:
-            text = "Изменить волонтера";
-            break;
+                text = "Изменить волонтера";
+                break;
         }
 
         return (
-            <Button primary> {text} </Button>
+            <Button primary onClick={this.handleButtonClick(queryType)}>
+                {text}
+            </Button>
         );
     };
 
@@ -72,7 +124,11 @@ class Sportsman extends React.Component {
         );
     }
 
-    render() {
+    renderInformation = () => {
+        if (this.state.choosing) {
+            return
+        }
+
         return (
             <div style = {{ display: "flex",
                             flexDirection: "row",
@@ -89,6 +145,32 @@ class Sportsman extends React.Component {
                                         this.state.volunteer)}
             </div>
         );
+    }
+
+    renderChoosingFromList = () => {
+        if (!this.state.choosing) {
+            return
+        }
+
+        return (
+            <div>
+                <h3> Выберите из списка объект, на который нужно заменить: <h3>
+
+                <SpecifiedList
+                    columns={this.state.columns}
+                    data={this.state.data}
+                    onRowClick={this.onRowClick}
+                    queryType={this.state.queryType}
+                />
+            </div>
+        );
+    }
+
+    render() {
+        <div>
+            {this.renderInformation()}
+            {this.renderChoosingFromList()}
+        </div>
     };
 }
 
