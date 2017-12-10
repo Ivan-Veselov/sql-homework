@@ -50,11 +50,11 @@ class SpecifiedList extends React.Component {
             let allQuery = this.props.queryType;
             let getQuery = this.createGetQuery(allQuery);
             let paramFunctions = [
-                this.props.getInfo(objectId, getQuery),
-                this.props.accommodationButton(objectId)
+                this.props.getInfo,
+                this.props.accommodationButton
             ];
 
-            rowCells.push(getClickableButtons(allQuery, paramFunctions));
+            rowCells.push(getClickableButtons(allQuery, paramFunctions, objectId, getQuery));
             rows.push(
                 <Table.Row key={index.toString()}>
                     {rowCells}
@@ -89,14 +89,15 @@ class SpecifiedList extends React.Component {
     }
 }
 
-let getClickableButtons = (queryType, clickFunctions) => {
+let getClickableButtons = (queryType, clickFunctions, objectId, getQuery) => {
     let getInfo = clickFunctions[0];
-    if (queryType === query.getQueryType.GET_ACCOMMODATION) {
+    if (queryType === query.allQueryType.ALL_ACCOMMODATIONS) {
         let getSportsmanAccommodation = clickFunctions[1];
+        console.log("hotel?");
         return (
             <Table.Cell key={"icons key"}>
-                <Icon name='hotel' onClick={() => getSportsmanAccommodation}/>
-                <Icon name='info circle' onClick={() => getInfo}/>
+                <Icon name='hotel' onClick={() => getSportsmanAccommodation(objectId)}/>
+                <Icon name='info circle' onClick={() => getInfo(objectId, getQuery)}/>
             </Table.Cell>
         );
     }
