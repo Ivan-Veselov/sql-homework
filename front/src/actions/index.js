@@ -102,3 +102,25 @@ export const allQuery = (newActiveItem, allQueryType) => {
         payload: data
     }
 };
+
+export const getSportsmanAccommodation = (accommodationId) => {
+    let recievedResponse = {};
+    let handler = response => {
+        recievedResponse = response;
+    };
+
+    let params = `accomodation_id=${accommodationId}`
+    //sendQuery(query.getQueryType.GET_SPORTSMAN, params);
+
+    recievedResponse = responses.all_sportsmen;
+
+    let data = {
+        queryType: query.getQueryType.GET_SPORTSMAN,
+        object: recievedResponse
+    };
+
+    return {
+        type: 'SPORTSMAN_ACCOMMODATION',
+        payload: data
+    }
+};
