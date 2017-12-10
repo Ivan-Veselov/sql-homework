@@ -5,7 +5,7 @@ let responses = require('../mock-responses');
  * @param id object's id
  * @param getQueryType /accommodation/get, /sportsman/get, /volunteer/get
  */
-export const getQuery = (id, getQueryType) => {
+export function getQuery(id, getQueryType) {
     let recievedResponse = {};
     let handler = response => {
         recievedResponse = response;
@@ -45,29 +45,26 @@ export const getQuery = (id, getQueryType) => {
         id
     };
 
-    return {
-        type: 'ROW_SELECTED',
-        payload: data
-    }
+    return data;
 };
 
 /**
  * @param allQueryType same as get, but "all"
  * @param newActiveItem active menu item
  */
-export const allQuery = (newActiveItem, allQueryType) => {
+export function allQuery(allQueryType) {
     let tableHeader = "";
     switch (allQueryType) {
         case query.allQueryType.ALL_ACCOMMODATIONS:
-            tableHeader = ["Название улицы", "Номер дома"];
+            tableHeader = ["Название улицы", "Номер дома", ""];
             break;
 
         case query.allQueryType.ALL_SPORTSMEN:
-            tableHeader = ["Имя Фамилия"];
+            tableHeader = ["Имя Фамилия", ""];
             break;
 
         case query.allQueryType.ALL_VOLUNTEERS:
-            tableHeader = ["Имя Фамилия"];
+            tableHeader = ["Имя Фамилия", ""];
     }
 
     let recievedResponse = {};
@@ -94,16 +91,12 @@ export const allQuery = (newActiveItem, allQueryType) => {
         queryType: allQueryType,
         tableHeader: tableHeader,
         tableBody: recievedResponse,
-        activeItem: newActiveItem
     };
 
-    return {
-        type: 'MENU_SELECTED',
-        payload: data
-    }
+    return data;
 };
 
-export const getSportsmanAccommodation = (accommodationId) => {
+export function getSportsmanAccommodation(accommodationId) {
     let recievedResponse = {};
     let handler = response => {
         recievedResponse = response;
@@ -119,8 +112,5 @@ export const getSportsmanAccommodation = (accommodationId) => {
         object: recievedResponse
     };
 
-    return {
-        type: 'SPORTSMAN_ACCOMMODATION',
-        payload: data
-    }
+    return data;
 };

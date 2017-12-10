@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu } from 'semantic-ui-react'
 import SpecifiedList from './list-view';
 import Details from './details'
+import { getQuery, allQuery, getSportsmanAccommodation } from '../actions';
 let query = require('../query');
 
 /**
@@ -16,62 +17,98 @@ const center = {
   marginBottom: "20px",
 };
 
-// Global todo: fix code style
 class UI extends React.Component {
-    renderContent = () => {
-        let queryType = this.props.queryType;
-        if (queryType !== null) {
-            let data = null;
-            let accommodation = this.props.accommodation;
-            let accommodationSportsmenClicked = accommodation !== null &&
-            queryType == query.getQueryType.GET_SPORTSMAN;
+    constructor() {
+        super();
 
-            if (accommodationSportsmenClicked) {
-                data = this.props.accommodation;
-            } else {
-                data = this.props.menuReducer.tableBody;
-            }
-            let columns = this.props.menuReducer.tableHeader;
-            let accommodationButton = undefined;
-            if (query.allQueryType.ALL_ACCOMMODATIONS) {
-                accommodationButton = this.props.selectAccommodationSportsmen;
-            }
+        this.state = {
+            activeItem: null,
+            queryType: null,
+            tableBody: null,
+            tableHeader: null,
+            accommodation: null,
 
-            switch(queryType) {
-                case query.allQueryType.ALL_SPORTSMEN:
-                case query.allQueryType.ALL_ACCOMMODATIONS:
-                case query.allQueryType.ALL_VOLUNTEERS:
-                    return (
-                        <SpecifiedList
-                            columns={columns}
-                            data={data}
-                            queryType={queryType}
-                            getInfo={getQuery}
-                            accommodationButton={accommodationButton}
-                        />
-                    );
-
-                case query.getQueryType.GET_SPORTSMAN:
-                case query.getQueryType.GET_ACCOMMODATION:
-                case query.getQueryType.GET_VOLUNTEER:
-                    return (
-                        <Details
-                            queryType={queryType}
-                            object={this.state.rowReducer}
-                        />
-                    );
-            }
+            selectMenuItem : allQuery,
+            getQuery,
+            getSportsmanAccommodation
         }
+    }
+
+    renderContent = () => {
+        let queryType = this.state.queryType;
+
+        if (queryType === null) {
+            return;
+        }
+
+        let data = null;
+        let accommodation = this.state.accommodation;
+        let accommodationSportsmenClicked = accommodation !== undefined &&
+        queryType === query.getQueryType.GET_SPORTSMAN;
+
+        if (accommodationSportsmenClicked) {
+            data = this.state.accommodation;
+        } else {
+            data = this.state.tableBody;
+        }
+        let columns = this.state.tableHeader;
+        let accommodationButton = undefined;
+        if (query.allQueryType.ALL_ACCOMMODATIONS) {
+            accommodationButton = this.state.getSportsmanAccommodation;
+        }
+
+        switch(queryType) {
+            case query.allQueryType.ALL_SPORTSMEN:
+            case query.allQueryType.ALL_ACCOMMODATIONS:
+            case query.allQueryType.ALL_VOLUNTEERS:
+                return (
+                    <SpecifiedList
+                        columns={columns}
+                        data={data}
+                        queryType={queryType}
+                        getInfo={this.state.getQuery}
+                        accommodationButton={accommodationButton}
+                    />
+                );
+                break;
+
+            case query.getQueryType.GET_SPORTSMAN:
+            case query.getQueryType.GET_ACCOMMODATION:
+            case query.getQueryType.GET_VOLUNTEER:
+                return (
+                    <Details
+                        queryType={queryType}
+                        object={this.state.rowReducer}
+                    />
+                );
+                break;
+        }
+    };
+
+    handleClick = (item, queryType) => {
+        let data = this.state.selectMenuItem(queryType);
+
+        ///console.log(this.state);
+        this.setState({
+            tableBody : data.tableBody,
+            tableHeader : data.tableHeader,
+            accommodation : null,
+            activeItem : item,
+            queryType : queryType
+        });
+
+        //console.log(this.state);
     };
 
     /**
      * Rendering tabs together.
      */
     render() {
-        const activeItem = this.props.activeItem;
+        const activeItem = this.state.activeItem;
         const allSportsmenItem = 'all_sportsmen';
         const allAccommodationsItem = 'all_accommodations';
         const allVolunteersItem = 'all_volunteers';
+        //console.log(activeItem);
 
         return (
             <div style={center}>
@@ -82,24 +119,24 @@ class UI extends React.Component {
                         name={allSportsmenItem}
                         active={activeItem === allSportsmenItem}
                         content='Список всех спортсменов'
-                        onClick={() => this.props.selectMenuItem(allSportsmenItem,
-                                                        query.allQueryType.ALL_SPORTSMEN)}
+                        onClick={() => this.handleClick(allSportsmenItem,
+                                        query.allQueryType.ALL_SPORTSMEN)}
                     />
 
                     <Menu.Item
                         name={allAccommodationsItem}
                         active={activeItem === allAccommodationsItem}
                         content='Список всех помещений'
-                        onClick={() => this.props.selectMenuItem(allAccommodationsItem,
-                                                        query.allQueryType.ALL_ACCOMMODATIONS)}
+                        onClick={() => this.handleClick(allAccommodationsItem,
+                                        query.allQueryType.ALL_ACCOMMODATIONS)}
                     />
 
                     <Menu.Item
                         name={allVolunteersItem}
                         active={activeItem === allVolunteersItem}
                         content='Список всех волонтеров'
-                        onClick={() => this.props.selectMenuItem(allVolunteersItem,
-                                                        query.allQueryType.ALL_VOLUNTEERS)}
+                        onClick={() => this.handleClick(allVolunteersItem,
+                                        query.allQueryType.ALL_VOLUNTEERS)}
                     />
                 </Menu>
 
