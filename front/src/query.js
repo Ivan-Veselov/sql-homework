@@ -17,6 +17,7 @@ let setQueryType = {
     SET_SPORTSMEN: 'sportsman/set'
 };
 
+// TODO: extract this functions to another file
 let getDetailTableHeader = (queryType) => {
     switch (queryType) {
         case getQueryType.GET_ACCOMMODATION:
@@ -34,13 +35,13 @@ let getCellNames = (queryType) => {
     // TODO: on all query do the same
     switch (queryType) {
         case getQueryType.GET_ACCOMMODATION:
-            return ["Улица", "Номер дома", "Тип помещения", "Название"]; 
+            return ["Улица", "Номер дома", "Тип помещения", "Название", ""];
 
         case getQueryType.GET_SPORTSMAN:
-            return ["Имя", "Пол", "Рост", "Вес", "Возраст", "Страна"];
+            return ["Имя", "Пол", "Рост", "Вес", "Возраст", "Страна", ""];
 
         case getQueryType.GET_VOLUNTEER:
-            return ["Имя", "Номер телефона"];
+            return ["Имя", "Номер телефона", ""];
     }
 };
 
