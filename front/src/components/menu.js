@@ -10,11 +10,11 @@ let query = require('../query');
     Center align
 */
 const center = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  marginBottom: "20px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "20px"
 };
 
 class UI extends React.Component {
@@ -57,7 +57,7 @@ class UI extends React.Component {
         if (query.allQueryType.ALL_ACCOMMODATIONS) {
             accommodationButton = this.state.getSportsmanAccommodation;
         }
-        
+
         switch(queryType) {
             case query.allQueryType.ALL_SPORTSMEN:
             case query.allQueryType.ALL_ACCOMMODATIONS:

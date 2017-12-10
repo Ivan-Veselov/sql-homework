@@ -1,5 +1,6 @@
 import React from 'react';
 import Details from './details';
+import { Button } from 'semantic-ui-react'
 let query = require('../query');
 
 class Sportsman extends React.Component {
@@ -18,17 +19,55 @@ class Sportsman extends React.Component {
             volunteer,
             accommodation
         }
-
-        console.log(this.state);
     }
+
+    renderButton = (queryType) => {
+        let text = "";
+
+
+        switch (queryType) {
+            case query.getQueryType.GET_SPORTSMAN:
+                return;
+                break;
+
+            case query.getQueryType.GET_ACCOMMODATION:
+                text = "Изменить помещение";
+                break;
+
+            case query.getQueryType.GET_VOLUNTEER:
+            text = "Изменить волонтера";
+            break;
+        }
+
+        return (
+            <Button primary> {text} </Button>
+        );
+    };
+
+    renderEmptyObject = (object) => {
+        if (object === null || object === undefined) {
+            return (
+                <h5> Выбранный объект у спортсмена отсутствует </h5>
+            );
+        }
+    };
 
     renderDetails = (queryType, object) => {
         return (
-            <div>
+            <div style = {{ display: "flex",
+                            flexDirection: "column",
+                            marginRight: "20px",
+                            marginLeft: "20px",
+                            alignItems: "center"
+                         }}>
                 <Details
                     queryType={queryType}
                     object={object}
                 />
+
+                {this.renderEmptyObject(object)}
+
+                {this.renderButton(queryType)}
             </div>
         );
     }
@@ -37,7 +76,8 @@ class Sportsman extends React.Component {
         return (
             <div style = {{ display: "flex",
                             flexDirection: "row",
-                            margin: "auto"
+                            marginRight: "20px",
+                            marginLeft: "20px",
                          }}>
                 {this.renderDetails(query.getQueryType.GET_SPORTSMAN,
                                         this.state.sportsman)}
