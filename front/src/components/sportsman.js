@@ -24,8 +24,7 @@ class Sportsman extends React.Component {
 
     renderDetails = (queryType, object) => {
         return (
-            <div style = {{ leftMargin: "50px",
-                            rightMargin: "50px" }}>
+            <div>
                 <Details
                     queryType={queryType}
                     object={object}
