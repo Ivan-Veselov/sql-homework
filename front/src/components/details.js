@@ -1,9 +1,18 @@
 import React from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import { Table } from 'semantic-ui-react'
 let query = require('../query');
 
 class Details extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            object: this.props.object,
+            queryType: this.props.queryType,
+        }
+    }
+
     renderDetails = () => {
         let cellNames = query.getCellNames(this.state.queryType);
 

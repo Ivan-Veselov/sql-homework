@@ -6,6 +6,20 @@ import {getQuery, getSportsmanAccommodation} from '../actions/index';
 let query = require('../query');
 
 class SpecifiedList extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            columns : this.props.columns,
+            data : this.props.data,
+            queryType : this.props.queryType,
+            columns : this.props.columns,
+
+            getInfo : this.props.getInfo,
+            accommodationButton : this.props.accommodationButton
+        }
+    }
+
     // TODO : change with map
     // TODO : fix child key prop
     renderTableHeader = () => {
