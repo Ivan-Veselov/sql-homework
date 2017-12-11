@@ -77,7 +77,7 @@ let get_volunteer = {
 };
 
 module.exports = {
-    all_volunteers, 
+    all_volunteers,
     all_accommodations,
     all_sportsmen,
     get_accommodation,

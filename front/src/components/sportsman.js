@@ -5,6 +5,14 @@ import { Button } from 'semantic-ui-react';
 import { allQuery, getQuery } from '../actions';
 let query = require('../query');
 
+const center = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "20px"
+};
+
 class Sportsman extends React.Component {
     constructor(props) {
         super(props);
@@ -26,7 +34,7 @@ class Sportsman extends React.Component {
 
     onRowClick = (id) => {
         let createdGetQuery = query.createGetQuery(this.state.queryType);
-        let response = getQuery(id, createGetQuery);
+        let response = getQuery(id, createdGetQuery);
 
         let sportsmanId = `$id=${this.state.sportsman.id}`;
         let accommodationId, volunteerId;
@@ -77,15 +85,15 @@ class Sportsman extends React.Component {
         let text = "";
 
         switch (queryType) {
-            case query.getQueryType.GET_SPORTSMAN:
+            case query.allQueryType.ALL_SPORTSMEN:
                 return;
                 break;
 
-            case query.getQueryType.GET_ACCOMMODATION:
+            case query.allQueryType.ALL_ACCOMMODATIONS:
                 text = "Изменить помещение";
                 break;
 
-            case query.getQueryType.GET_VOLUNTEER:
+            case query.allQueryType.ALL_VOLUNTEERS:
                 text = "Изменить волонтера";
                 break;
         }
@@ -105,7 +113,7 @@ class Sportsman extends React.Component {
         }
     };
 
-    renderDetails = (queryType, object) => {
+    renderDetails = (getQueryType, allQueryType, object) => {
         return (
             <div style = {{ display: "flex",
                             flexDirection: "column",
@@ -114,13 +122,13 @@ class Sportsman extends React.Component {
                             alignItems: "center"
                          }}>
                 <Details
-                    queryType={queryType}
+                    queryType={getQueryType}
                     object={object}
                 />
 
                 {this.renderEmptyObject(object)}
 
-                {this.renderButton(queryType)}
+                {this.renderButton(allQueryType)}
             </div>
         );
     }
@@ -137,12 +145,15 @@ class Sportsman extends React.Component {
                             marginLeft: "20px",
                          }}>
                 {this.renderDetails(query.getQueryType.GET_SPORTSMAN,
+                                    query.allQueryType.ALL_SPORTSMEN,
                                         this.state.sportsman)}
 
                 {this.renderDetails(query.getQueryType.GET_ACCOMMODATION,
+                                    query.allQueryType.ALL_ACCOMMODATIONS,
                                         this.state.accommodation)}
 
                 {this.renderDetails(query.getQueryType.GET_VOLUNTEER,
+                                    query.allQueryType.ALL_VOLUNTEERS,
                                         this.state.volunteer)}
             </div>
         );
@@ -154,7 +165,7 @@ class Sportsman extends React.Component {
         }
 
         return (
-            <div>
+            <div style={center}>
                 <h3> Выберите из списка объект, на который нужно заменить: </h3>
 
                 <SpecifiedList

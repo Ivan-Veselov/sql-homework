@@ -10,7 +10,13 @@ class SpecifiedList extends React.Component {
     // TODO : change with map
     renderTableHeader = () => {
         let cells = [];
-        for (let index = 0; index < this.props.columns.length; index++) {
+        let columnsNumber = this.props.columns.length;
+
+        if (this.props.onRowClick !== undefined) {
+            columnsNumber -= 1; // removing empty icon column
+        }
+
+        for (let index = 0; index < columnsNumber; index++) {
             let columnName = this.props.columns[index];
 
             cells.push(
