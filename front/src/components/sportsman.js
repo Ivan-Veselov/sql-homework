@@ -29,21 +29,22 @@ class Sportsman extends React.Component {
         let response = getQuery(id, createGetQuery);
 
         let sportsmanId = `$id=${this.state.sportsman.id}`;
+        let accommodationId, volunteerId;
         let object = response.object;
         let params = "";
 
         switch (createdGetQuery) {
             case query.getQueryType.GET_ACCOMMODATION:
                 this.setState({accommodation : object});
-                let accommodationId = `$accommodation_id=${id}`;
-                let volunteerId = `$volunteer_id=${this.state.volunteer.id}`;
+                accommodationId = `$accommodation_id=${id}`;
+                volunteerId = `$volunteer_id=${this.state.volunteer.id}`;
                 params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
                 break;
 
             case query.getQueryType.GET_VOLUNTEER:
                 this.setState({volunteer : object});
-                let accommodationId = `$accommodation_id=${this.state.accommodation.id}`;
-                let volunteerId = `$volunteer_id=${id}`;
+                accommodationId = `$accommodation_id=${this.state.accommodation.id}`;
+                volunteerId = `$volunteer_id=${id}`;
                 params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
                 break;
         }
@@ -58,7 +59,7 @@ class Sportsman extends React.Component {
             recievedResponse = response;
         };
         // sendQuery(query.setQueryType.SET_SPORTSMEN, params, handler)
-        this.setState({choosing : false})
+        this.setState({choosing : false});
     }
 
     handleButtonClick = (queryType) => {
@@ -90,7 +91,7 @@ class Sportsman extends React.Component {
         }
 
         return (
-            <Button primary onClick={this.handleButtonClick(queryType)}>
+            <Button primary onClick={() => this.handleButtonClick(queryType)}>
                 {text}
             </Button>
         );
@@ -154,7 +155,7 @@ class Sportsman extends React.Component {
 
         return (
             <div>
-                <h3> Выберите из списка объект, на который нужно заменить: <h3>
+                <h3> Выберите из списка объект, на который нужно заменить: </h3>
 
                 <SpecifiedList
                     columns={this.state.columns}
@@ -167,10 +168,13 @@ class Sportsman extends React.Component {
     }
 
     render() {
-        <div>
-            {this.renderInformation()}
-            {this.renderChoosingFromList()}
-        </div>
+
+        return (
+            <div>
+                {this.renderInformation()}
+                {this.renderChoosingFromList()}
+            </div>
+        );
     };
 }
 
