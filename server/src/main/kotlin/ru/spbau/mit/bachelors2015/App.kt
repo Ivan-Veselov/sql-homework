@@ -80,14 +80,21 @@ class Server(database: DataBaseManager) {
     fun run() {
         init()
 
-        safeGet("/sportsman/all", sportsmanAll)
-        safeGet("/accommodation/all", accommodationAll)
-        safeGet("volunteer/all", volunteerAll)
-        safeGet("/sportsman/get", sportsmanGet)
-        safeGet("/accommodation/get", accommodationGet)
-        safeGet("/volunteer/get", volunteerGet)
-        safeGet("/sportsman/set", sportsmanSet)
-        // todo: group queries
+        path("/sportsman") {
+            safeGet("/all", sportsmanAll)
+            safeGet("/get", sportsmanGet)
+            safeGet("/set", sportsmanSet)
+        }
+
+        path("/accommodation") {
+            safeGet("/all", accommodationAll)
+            safeGet("/get", accommodationGet)
+        }
+
+        path("/volunteer") {
+            safeGet("/all", volunteerAll)
+            safeGet("/get", volunteerGet)
+        }
     }
 
     private fun init() {
