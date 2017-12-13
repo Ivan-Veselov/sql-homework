@@ -64,7 +64,7 @@ class Server(database: DataBaseManager) {
         database.getVolunteer(volunteerId)
     }
 
-    private val sportsmanSet: (Request, Response) -> Any? = {
+    private val sportsmanSet: (Request, Response) -> Any? = lambda@ {
         request, _ ->
 
         val athleteId = request.getRequiredIntParam("id")
@@ -74,7 +74,7 @@ class Server(database: DataBaseManager) {
         database.setAthleteInfo(athleteId, accommodationId, volunteerId)
 
         // response.redirect("/all") // todo: looks weird; don't understand what this is
-        null // todo: is that necessary?
+        return@lambda null // todo: is that necessary?
     }
 
     fun run() {
