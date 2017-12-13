@@ -31,41 +31,37 @@ class Server(database: DataBaseManager) {
     private val sportsmanAll: (Request, Response) -> Any? = {
         request, _ ->
         val accommodationId = request.getOptionalIntParam("accommodation_id")
-        val athletes = database.allAthletes(accommodationId)
 
-        jsonSerializer.toJson(athletes)
+        database.allAthletes(accommodationId)
     }
 
     private val accommodationAll: (Request, Response) -> Any? = {
-        _, _ -> jsonSerializer.toJson(database.allAccommodations())
+        _, _ -> database.allAccommodations()
     }
 
     private val volunteerAll: (Request, Response) -> Any? = {
-        _, _ -> jsonSerializer.toJson(database.allVolunteers())
+        _, _ -> database.allVolunteers()
     }
 
     private val sportsmanGet: (Request, Response) -> Any? = {
         request, _ ->
         val athleteId = request.getRequiredIntParam("id")
-        val athlete = database.getAthlete(athleteId)
 
-        jsonSerializer.toJson(athlete)
+        database.getAthlete(athleteId)
     }
 
     private val accommodationGet: (Request, Response) -> Any? = {
         request, _ ->
         val accommodationId = request.getRequiredIntParam("id")
-        val accommodation = database.getAccommodation(accommodationId)
 
-        jsonSerializer.toJson(accommodation)
+        database.getAccommodation(accommodationId)
     }
 
     private val volunteerGet: (Request, Response) -> Any? = {
         request, _ ->
         val volunteerId = request.getRequiredIntParam("id")
-        val volunteer = database.getVolunteer(volunteerId)
 
-        jsonSerializer.toJson(volunteer)
+        database.getVolunteer(volunteerId)
     }
 
     private val sportsmanSet: (Request, Response) -> Any? = {
@@ -78,7 +74,7 @@ class Server(database: DataBaseManager) {
         database.setAthleteInfo(athleteId, accommodationId, volunteerId)
 
         // response.redirect("/all") // todo: looks weird; don't understand what this is
-        null
+        null // todo: is that necessary?
     }
 
     fun run() {
@@ -91,6 +87,7 @@ class Server(database: DataBaseManager) {
         safeGet("/accommodation/get", accommodationGet)
         safeGet("/volunteer/get", volunteerGet)
         safeGet("/sportsman/set", sportsmanSet)
+        // todo: group queries
     }
 
     private fun init() {
@@ -105,14 +102,26 @@ class Server(database: DataBaseManager) {
     private fun safeGet(path: String, route: (Request, Response) -> Any?) {
         get(path) {
             request, response ->
-            try {
-                route(request, response)
+            val objectToSend = try {
+                OrdinaryResponse(route(request, response))
             } catch (e: InvalidQueryException) {
-                // todo: write catch block
+                ErrorResponse(e.message ?: "Unknown error")
             }
 
-            // todo: might be a good idea to put serialization here
+            jsonSerializer.toJson(objectToSend)
         }
+    }
+
+    private abstract class ServerResponse {
+        abstract val type: String
+    }
+
+    private class OrdinaryResponse(val result: Any?) : ServerResponse() {
+        override val type: String = "success"
+    }
+
+    private class ErrorResponse(val message: String) : ServerResponse() {
+        override val type: String = "error"
     }
 }
 
