@@ -11,8 +11,6 @@ export function getQuery(id, getQueryType) {
         recievedResponse = response;
     };
 
-    console.log(responses);
-    console.log("______");// проблема с экспортом get_sportsman, почему-то нет волонтера с помещением?!?!?!Ж
     switch (getQueryType) {
         case query.getQueryType.GET_ACCOMMODATION:
             recievedResponse = responses.get_accommodation;
@@ -27,7 +25,6 @@ export function getQuery(id, getQueryType) {
             break;
     }
     recievedResponse.id = id;
-    console.log(recievedResponse);
     //sendQuery(getQueryType, `id=${id}`);
 
     let data = {

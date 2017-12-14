@@ -13,12 +13,16 @@ class Details extends React.Component {
         let detailIndex = 0;
         let rows = [];
         for (let item in this.props.object) {
+            if (item === "id") {
+                continue;
+            }
+
             let detail = this.props.object[item];
             let detailName = cellNames[detailIndex];
             detailIndex++;
 
             rows.push(
-                <Table.Row key={detailIndex}>
+                <Table.Row key={detailIndex + this.props.queryType}>
                     <Table.Cell textAlign='center'> {detailName} </Table.Cell>
                     <Table.Cell textAlign='center'> {detail} </Table.Cell>
                 </Table.Row>
