@@ -2,6 +2,7 @@ package ru.spbau.mit.bachelors2015
 
 import java.sql.Connection
 import java.sql.DriverManager
+import java.sql.Types
 import kotlin.coroutines.experimental.buildSequence
 
 interface DataBaseManager {
@@ -29,7 +30,6 @@ class DataBaseManagerImpl(
 ) : DataBaseManager {
 
     private val connection: Connection = DriverManager.getConnection("jdbc:postgresql://$host:$port/$database", user, password)
-
 
     override fun allAthletes(accommodationId: Int?) : List<AthleteBrief> {
         val statement = """
@@ -163,8 +163,30 @@ class DataBaseManagerImpl(
     }
 
     override fun setAthleteInfo(athleteId: Int, accommodationId: Int?, volunteerId: Int?) {
-        TODO("not implemented")
+        val statement = connection.prepareStatement("""
+            |UPDATE athletes SET accomodation_id = ?, volunteer_id = ?
+            |   WHERE id = ?
+            |   """.trimMargin())
+                .apply {
+                    if (accommodationId != null) {
+                        setInt(1, accommodationId)
+                    } else {
+                        setNull(1, Types.INTEGER)
+                    }
+
+                    if (volunteerId != null) {
+                        setInt(2, volunteerId)
+                    } else {
+                        setNull(2, Types.INTEGER)
+                    }
+
+                    setInt(3, athleteId)
+                }
+        if (statement.executeUpdate() == 0) {
+            throw InvalidIdException(athleteId, "athletes")
+        }
     }
+
 
     private fun maybeAccommodationBrief(id: Int?, street: String?, houseNumber: Int?): AccommodationBrief? {
         return if (id != null && street != null && houseNumber != null) {
@@ -181,5 +203,4 @@ class DataBaseManagerImpl(
             null
         }
     }
-
 }
