@@ -102,7 +102,7 @@ class Server(database: DataBaseManager) {
             e, _, _ -> e.printStackTrace()
         }
 
-        // staticFiles.location("/public") todo: set location for html files
+        staticFiles.location("/public")
         port(serverPort)
     }
 
