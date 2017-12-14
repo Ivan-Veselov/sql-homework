@@ -1,5 +1,5 @@
 import $ from "jquery";
-let port = 1234;
+let port = 8080;
 
 let allQueryType = {
     ALL_SPORTSMEN: 'sportsman/all',
