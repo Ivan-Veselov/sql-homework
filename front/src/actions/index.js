@@ -16,7 +16,7 @@ export function getQuery(id, getQueryType, menu) {
         recievedResponse.id = id;
     };
 
-    sendQuery(getQueryType, `id=${id}`, handler);
+    query.sendQuery(getQueryType, `id=${id}`, handler);
 
     let data = {
         queryType: getQueryType,
@@ -58,7 +58,7 @@ export function allQuery(allQueryType, menu) {
         recievedResponse = response;
     };
 
-    sendQuery(allQueryType, "", handler);
+    query.sendQuery(allQueryType, "", handler);
 
     let data = {
         queryType: allQueryType,
@@ -82,7 +82,7 @@ export function getSportsmanAccommodation(accommodationId, menu) {
 
     let params = `accomodation_id=${accommodationId}`;
     let queryType = query.allQueryType.ALL_SPORTSMEN;
-    sendQuery(query.getQueryType.GET_SPORTSMAN, params, handler);
+    query.sendQuery(query.getQueryType.GET_SPORTSMAN, params, handler);
 
     let tableHeader = getTableHeader(queryType);
     recievedResponse = responses.all_sportsmen;
