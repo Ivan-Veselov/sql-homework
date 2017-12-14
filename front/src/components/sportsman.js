@@ -72,7 +72,9 @@ class Sportsman extends React.Component {
 
             recievedResponse = response;
         };
-        // sendQuery(query.setQueryType.SET_SPORTSMEN, params, handler)
+        
+        sendQuery(query.setQueryType.SET_SPORTSMEN, params, handler);
+
         this.setState({
             choosing: false,
             changedInformation: recievedResponse
