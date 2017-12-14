@@ -5,9 +5,14 @@ let responses = require('../mock-responses');
  * @param id object's id
  * @param getQueryType /accommodation/get, /sportsman/get, /volunteer/get
  */
-export function getQuery(id, getQueryType) {
+export function getQuery(id, getQueryType, menu) {
     let recievedResponse = {};
     let handler = response => {
+        if (response.error !== undefined) {
+            menu.showError(response.message);
+            return;
+        }
+
         recievedResponse = response;
     };
 
@@ -25,7 +30,7 @@ export function getQuery(id, getQueryType) {
             break;
     }
     recievedResponse.id = id;
-    //sendQuery(getQueryType, `id=${id}`);
+    //sendQuery(getQueryType, `id=${id}`, handler);
 
     let data = {
         queryType: getQueryType,
@@ -54,15 +59,16 @@ function getTableHeader(allQueryType) {
     return tableHeader;
 }
 
-/**
- * @param allQueryType same as get, but "all"
- * @param newActiveItem active menu item
- */
-export function allQuery(allQueryType) {
+export function allQuery(allQueryType, menu) {
     let tableHeader = getTableHeader(allQueryType);
 
     let recievedResponse = {};
     let handler = response => {
+        if (response.error !== undefined) {
+            menu.showError(response.message);
+            return;
+        }
+
         recievedResponse = response;
     };
 
@@ -90,7 +96,7 @@ export function allQuery(allQueryType) {
     return data;
 };
 
-export function getSportsmanAccommodation(accommodationId) {
+export function getSportsmanAccommodation(accommodationId, menu) {
     let recievedResponse = {};
     let handler = response => {
         recievedResponse = response;

@@ -6,9 +6,6 @@ import Sportsman from './sportsman';
 import { getQuery, allQuery, getSportsmanAccommodation } from '../actions';
 let query = require('../query');
 
-/**
-    Center align
-*/
 const center = {
     display: "flex",
     flexDirection: "column",
@@ -84,6 +81,7 @@ class UI extends React.Component {
                     <Details
                         queryType={queryType}
                         object={this.state.objectInformation}
+                        menu={this}
                     />
                 );
                 break;
@@ -104,7 +102,6 @@ class UI extends React.Component {
     handleClick = (item, queryType) => {
         let data = this.state.selectMenuItem(queryType);
 
-        ///console.log(this.state);
         this.setState({
             tableBody : data.tableBody,
             tableHeader : data.tableHeader,
@@ -112,8 +109,6 @@ class UI extends React.Component {
             activeItem : item,
             queryType : queryType
         });
-
-        //console.log(this.state);
     };
 
     showError = (message) => {
@@ -131,15 +126,11 @@ class UI extends React.Component {
         );
     }
 
-    /**
-     * Rendering tabs together.
-     */
     render() {
         const activeItem = this.state.activeItem;
         const allSportsmenItem = 'all_sportsmen';
         const allAccommodationsItem = 'all_accommodations';
         const allVolunteersItem = 'all_volunteers';
-        //console.log(activeItem);
 
         return (
             <div style={center}>

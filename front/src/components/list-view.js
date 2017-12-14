@@ -7,7 +7,6 @@ class SpecifiedList extends React.Component {
         super(props);
     }
 
-    // TODO : change with map
     renderTableHeader = () => {
         let cells = [];
         let columnsNumber = this.props.columns.length;
@@ -56,7 +55,7 @@ class SpecifiedList extends React.Component {
             if (this.props.onRowClick !== undefined) {
                 rows.push(
                     <Table.Row key={index.toString()}
-                                onClick={() => this.props.onRowClick(index)}>
+                                onClick={() => this.props.onRowClick(objectId)}>
                         {rowCells}
                     </Table.Row>
                 );
@@ -79,7 +78,6 @@ class SpecifiedList extends React.Component {
                     {rowCells}
                 </Table.Row>
             );
-
         }
 
         return (
@@ -133,12 +131,12 @@ let getClickableButtons = (menu, queryType, clickFunctions, objectId, getQuery) 
         return (
             <Table.Cell key={"icons key"}>
                 <Icon name='hotel' onClick={() =>
-                    handleHotelClick(menu, getSportsmanAccommodation(objectId))
+                    handleHotelClick(menu, getSportsmanAccommodation(objectId, menu))
                 }/>
 
 
                 <Icon name='info circle' onClick={() =>
-                    handleGetInfoClick(menu, getInfo(objectId, getQuery))
+                    handleGetInfoClick(menu, getInfo(objectId, getQuery, menu))
                 }/>
             </Table.Cell>
         );
@@ -147,7 +145,7 @@ let getClickableButtons = (menu, queryType, clickFunctions, objectId, getQuery) 
     return (
         <Table.Cell key={"icons key"}>
             <Icon name='info circle' onClick={() =>
-                handleGetInfoClick(menu, getInfo(objectId, getQuery))
+                handleGetInfoClick(menu, getInfo(objectId, getQuery, menu))
             }/>
         </Table.Cell>
     );
