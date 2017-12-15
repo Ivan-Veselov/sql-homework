@@ -4,6 +4,9 @@ import com.google.gson.GsonBuilder
 import spark.Request
 import spark.Response
 import spark.Spark.*
+import com.google.gson.internal.bind.TypeAdapters.URL
+import java.net.URLClassLoader
+
 
 fun Request.getIntParam(name: String) : Int? {
     val param = this.queryParams(name) ?: return null
@@ -248,5 +251,14 @@ class DullDataBaseManager : DataBaseManager {
 
 fun main(args: Array<String>) {
     // todo: replace dull manager with true one
+
+    val cl = ClassLoader.getSystemClassLoader()
+
+    val urls = (cl as URLClassLoader).getURLs()
+
+    for (url in urls) {
+        System.out.println(url.getFile())
+    }
+
     Server(DullDataBaseManager()).run()
 }
