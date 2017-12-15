@@ -2,12 +2,12 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: 'index.js',
     devtool: 'sourcemaps',
 
     output: {
         path: __dirname,
-        filename: './build/resources/bundle.js'
+        filename: '../build/resources/main/public/bundle.js'
     },
 
     resolve: {
