@@ -65,12 +65,12 @@ class Sportsman extends React.Component {
         let handler = response => {
             let menu = this.props.menu;
 
-            if (response.error !== undefined) {
+            if (response.type !== 'success') {
                 menu.showError(response.message);
                 return;
             }
 
-            recievedResponse = response;
+            recievedResponse = response.result;
         };
 
         query.sendQuery(query.setQueryType.SET_SPORTSMEN, params, handler);

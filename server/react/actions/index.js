@@ -7,12 +7,12 @@ let query = require('../query');
 export function getQuery(id, getQueryType, menu) {
     let recievedResponse = {};
     let handler = response => {
-        if (response.error !== undefined) {
+        if (response.type !== 'success') {
             menu.showError(response.message);
             return;
         }
 
-        recievedResponse = response;
+        recievedResponse = response.result;
         recievedResponse.id = id;
     };
 
@@ -50,12 +50,12 @@ export function allQuery(allQueryType, menu) {
 
     let recievedResponse = {};
     let handler = response => {
-        if (response.error !== undefined) {
+        if (response.type !== 'success') {
             menu.showError(response.message);
             return;
         }
 
-        recievedResponse = response;
+        recievedResponse = response.result;
     };
 
     query.sendQuery(allQueryType, "", handler);
@@ -72,12 +72,12 @@ export function allQuery(allQueryType, menu) {
 export function getSportsmanAccommodation(accommodationId, menu) {
     let recievedResponse = {};
     let handler = response => {
-        if (response.error !== undefined) {
+        if (response.type !== 'success') {
             menu.showError(response.message);
             return;
         }
 
-        recievedResponse = response;
+        recievedResponse = response.result;
     };
 
     let params = `accomodation_id=${accommodationId}`;
