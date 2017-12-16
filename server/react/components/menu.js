@@ -100,15 +100,8 @@ class UI extends React.Component {
     };
 
     handleClick = (item, queryType) => {
-        let data = this.state.selectMenuItem(queryType);
-
-        this.setState({
-            tableBody : data.tableBody,
-            tableHeader : data.tableHeader,
-            accommodation : false,
-            activeItem : item,
-            queryType : queryType
-        });
+        // TODO: remove this function
+        this.state.selectMenuItem(queryType, this, item);
     };
 
     showError = (message) => {

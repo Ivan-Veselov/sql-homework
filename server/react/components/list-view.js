@@ -131,12 +131,12 @@ let getClickableButtons = (menu, queryType, clickFunctions, objectId, getQuery) 
         return (
             <Table.Cell key={"icons key"}>
                 <Icon name='hotel' onClick={() =>
-                    handleHotelClick(menu, getSportsmanAccommodation(objectId, menu))
+                    getSportsmanAccommodation(objectId, menu, handleHotelClick)
                 }/>
 
 
                 <Icon name='info circle' onClick={() =>
-                    handleGetInfoClick(menu, getInfo(objectId, getQuery, menu))
+                    getInfo(objectId, getQuery, menu, handleGetInfoClick)
                 }/>
             </Table.Cell>
         );
@@ -145,7 +145,7 @@ let getClickableButtons = (menu, queryType, clickFunctions, objectId, getQuery) 
     return (
         <Table.Cell key={"icons key"}>
             <Icon name='info circle' onClick={() =>
-                handleGetInfoClick(menu, getInfo(objectId, getQuery, menu))
+                getInfo(objectId, getQuery, menu, handleGetInfoClick)
             }/>
         </Table.Cell>
     );
