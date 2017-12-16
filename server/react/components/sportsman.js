@@ -62,8 +62,6 @@ class Sportsman extends React.Component {
             }
 
             let setHandler = response => {
-                console.log(response);
-
                 let menu = this.props.menu;
 
                 if (response.type === 'error') {
