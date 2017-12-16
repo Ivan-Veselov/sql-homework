@@ -8,7 +8,7 @@ export function getQuery(id, getQueryType, menu, handleData) {
     let recievedResponse = {};
     let handler = response => {
         if (response.type !== 'success') {
-            menu.showError(response.message);
+            menu.setError(response.message);
             return;
         }
 
@@ -45,13 +45,13 @@ function getTableHeader(allQueryType) {
     return tableHeader;
 }
 
-export function allQuery(allQueryType, menu, menuItem) {
+export function allQuery(allQueryType, menu, handleData) {
     let tableHeader = getTableHeader(allQueryType);
 
     let recievedResponse = [];
     let handler = response => {
         if (response.type !== 'success') {
-            menu.showError(response.message);
+            menu.setError(response.message);
             return;
         }
 
@@ -63,13 +63,7 @@ export function allQuery(allQueryType, menu, menuItem) {
             tableBody: recievedResponse,
         };
 
-        menu.setState({
-            tableBody : data.tableBody,
-            tableHeader : data.tableHeader,
-            accommodation : false,
-            activeItem : menuItem,
-            queryType : allQueryType
-        });
+        handleData(menu, data);
     };
 
     query.sendQuery(allQueryType, "", handler.bind(this));

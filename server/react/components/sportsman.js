@@ -35,61 +35,67 @@ class Sportsman extends React.Component {
 
     onRowClick = (id) => {
         let createdGetQuery = query.createGetQuery(this.state.queryType);
-        let response = getQuery(id, createdGetQuery, this.props.menu);
 
-        let sportsmanId = `$id=${this.state.sportsman.id}`;
-        let accommodationId, volunteerId;
-        let object = response.object;
-        let params = "";
+        let handler = (menu, response) => {
+            let sportsmanId = `$id=${this.state.sportsman.id}`;
+            let accommodationId, volunteerId;
+            let object = response.object;
+            let params = "";
 
-        let changedInformation = null;
-        switch (createdGetQuery) {
-            case query.getQueryType.GET_ACCOMMODATION:
-                this.setState({accommodation : object});
-                accommodationId = `$accommodation_id=${id}`;
-                volunteerId = `$volunteer_id=${this.state.volunteer.id}`;
-                params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
-                changedInformation = "accommodation";
-                break;
+            let changedInformation = null;
+            switch (createdGetQuery) {
+                case query.getQueryType.GET_ACCOMMODATION:
+                    this.setState({accommodation : object});
+                    accommodationId = `$accommodation_id=${id}`;
+                    volunteerId = `$volunteer_id=${this.state.volunteer.id}`;
+                    params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
+                    changedInformation = "accommodation";
+                    break;
 
-            case query.getQueryType.GET_VOLUNTEER:
-                this.setState({volunteer : object});
-                accommodationId = `$accommodation_id=${this.state.accommodation.id}`;
-                volunteerId = `$volunteer_id=${id}`;
-                params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
-                changedInformation = "volunteer";
-                break;
-        }
-
-        let recievedResponse = null;
-        let handler = response => {
-            let menu = this.props.menu;
-
-            if (response.type !== 'success') {
-                menu.showError(response.message);
-                return;
+                case query.getQueryType.GET_VOLUNTEER:
+                    this.setState({volunteer : object});
+                    accommodationId = `$accommodation_id=${this.state.accommodation.id}`;
+                    volunteerId = `$volunteer_id=${id}`;
+                    params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
+                    changedInformation = "volunteer";
+                    break;
             }
 
-            recievedResponse = response.result;
-        };
+            let setHandler = response => {
+                console.log(response);
 
-        query.sendQuery(query.setQueryType.SET_SPORTSMEN, params, handler);
+                let menu = this.props.menu;
 
-        this.setState({
-            choosing: false,
-            changedInformation: recievedResponse
-        });
+                if (response.type === 'error') {
+                    menu.setError(response.message);
+                    return;
+                }
+
+                recievedResponse = response.result;
+
+                this.setState({
+                    choosing: false,
+                    changedInformation: recievedResponse
+                });
+            };
+
+            query.sendQuery(query.setQueryType.SET_SPORTSMEN, params, setHandler.bind(this));
+        }
+
+        getQuery(id, createdGetQuery, this.props.menu, handler.bind(this));
     }
 
     handleButtonClick = (queryType) => {
-        let response = allQuery(queryType);
+        let handler = (menu, response) => {
+            this.setState({
+                choosing: true,
+                data: response.tableBody,
+                columns: response.tableHeader,
+                queryType
+            });
+        }
 
-        this.setState({
-            choosing: true,
-            data: response.tableBody,
-            columns: response.tableHeader,
-            queryType
-        });
+        allQuery(queryType, this.props.menu, handler.bind(this));
     }
 
     renderButton = (queryType) => {
