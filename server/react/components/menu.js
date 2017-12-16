@@ -29,6 +29,7 @@ class UI extends React.Component {
             tableHeader: null,
             accommodation: false,
             objectInformation: null,
+            error: "",
 
             selectMenuItem : allQuery,
             getQuery,
@@ -100,23 +101,32 @@ class UI extends React.Component {
     };
 
     handleClick = (item, queryType) => {
-        let data = this.state.selectMenuItem(queryType);
+        let handler = (menu, data) => {
+            menu.setState({
+                tableBody : data.tableBody,
+                tableHeader : data.tableHeader,
+                accommodation : false,
+                activeItem : item,
+                queryType : queryType,
+                error: ""
+            });
+        };
+
+        this.state.selectMenuItem(queryType, this, handler);
+    };
+
+    setError = (message) => {
+        this.initState();
 
         this.setState({
-            tableBody : data.tableBody,
-            tableHeader : data.tableHeader,
-            accommodation : false,
-            activeItem : item,
-            queryType : queryType
+            error: message
         });
-    };
+    }
 
     showError = (message) => {
         if (message === "") {
-            return;
+            return
         }
-
-        this.initState();
 
         return (
             <div>
@@ -163,7 +173,7 @@ class UI extends React.Component {
                 </Menu>
 
                 {this.renderContent()}
-                {this.showError("")}
+                {this.showError(this.state.error)}
             </div>
         );
     };

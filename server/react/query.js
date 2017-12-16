@@ -4,13 +4,13 @@ let port = 8080;
 let allQueryType = {
     ALL_SPORTSMEN: 'sportsman/all',
     ALL_ACCOMMODATIONS: 'accommodation/all',
-    ALL_VOLUNTEERS: 'volunteers/all',
+    ALL_VOLUNTEERS: 'volunteer/all',
 };
 
 let getQueryType = {
     GET_SPORTSMAN: 'sportsman/get',
     GET_ACCOMMODATION: 'accommodation/get',
-    GET_VOLUNTEER: 'volunteers/get',
+    GET_VOLUNTEER: 'volunteer/get',
 };
 
 let setQueryType = {
@@ -58,9 +58,11 @@ let sendQuery = (queryName, params, dataHandler) => {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(response) {
-            dataHandler(response);
+            return dataHandler(response);
         }
     });
+
+    return {};
 };
 
 module.exports = {
