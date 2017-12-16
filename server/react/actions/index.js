@@ -4,7 +4,7 @@ let query = require('../query');
  * @param id object's id
  * @param getQueryType /accommodation/get, /sportsman/get, /volunteer/get
  */
-export function getQuery(id, getQueryType, menu) {
+export function getQuery(id, getQueryType, menu, handleData) {
     let recievedResponse = {};
     let handler = response => {
         if (response.type !== 'success') {
@@ -14,17 +14,17 @@ export function getQuery(id, getQueryType, menu) {
 
         recievedResponse = response.result;
         recievedResponse.id = id;
+
+        let data = {
+            queryType: getQueryType,
+            object: recievedResponse,
+            id
+        };
+
+        handleData(menu, data);
     };
 
-    query.sendQuery(getQueryType, `id=${id}`, handler);
-
-    let data = {
-        queryType: getQueryType,
-        object: recievedResponse,
-        id
-    };
-
-    return data;
+    query.sendQuery(getQueryType, `id=${id}`, handler.bind(this));
 };
 
 function getTableHeader(allQueryType) {
@@ -45,10 +45,10 @@ function getTableHeader(allQueryType) {
     return tableHeader;
 }
 
-export function allQuery(allQueryType, menu) {
+export function allQuery(allQueryType, menu, menuItem) {
     let tableHeader = getTableHeader(allQueryType);
 
-    let recievedResponse = {};
+    let recievedResponse = [];
     let handler = response => {
         if (response.type !== 'success') {
             menu.showError(response.message);
@@ -56,21 +56,30 @@ export function allQuery(allQueryType, menu) {
         }
 
         recievedResponse = response.result;
+
+        let data = {
+            queryType: allQueryType,
+            tableHeader: tableHeader,
+            tableBody: recievedResponse,
+        };
+
+        menu.setState({
+            tableBody : data.tableBody,
+            tableHeader : data.tableHeader,
+            accommodation : false,
+            activeItem : menuItem,
+            queryType : allQueryType
+        });
     };
 
-    query.sendQuery(allQueryType, "", handler);
-
-    let data = {
-        queryType: allQueryType,
-        tableHeader: tableHeader,
-        tableBody: recievedResponse,
-    };
-
-    return data;
+    query.sendQuery(allQueryType, "", handler.bind(this));
 };
 
-export function getSportsmanAccommodation(accommodationId, menu) {
+export function getSportsmanAccommodation(accommodationId, menu, handleData) {
     let recievedResponse = {};
+    let params = `accommodation_id=${accommodationId}`;
+    let queryType = query.allQueryType.ALL_SPORTSMEN;
+
     let handler = response => {
         if (response.type !== 'success') {
             menu.showError(response.message);
@@ -78,20 +87,17 @@ export function getSportsmanAccommodation(accommodationId, menu) {
         }
 
         recievedResponse = response.result;
+
+        let tableHeader = getTableHeader(queryType);
+
+        let data = {
+            queryType,
+            tableBody: recievedResponse,
+            tableHeader
+        };
+
+        handleData(menu, data);
     };
 
-    let params = `accomodation_id=${accommodationId}`;
-    let queryType = query.allQueryType.ALL_SPORTSMEN;
-    query.sendQuery(query.getQueryType.GET_SPORTSMAN, params, handler);
-
-    let tableHeader = getTableHeader(queryType);
-    recievedResponse = responses.all_sportsmen;
-
-    let data = {
-        queryType,
-        tableBody: recievedResponse,
-        tableHeader
-    };
-
-    return data;
+    query.sendQuery(query.allQueryType.ALL_SPORTSMEN, params, handler.bind(this));
 };
