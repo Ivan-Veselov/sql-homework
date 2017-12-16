@@ -37,7 +37,7 @@ class Sportsman extends React.Component {
         let createdGetQuery = query.createGetQuery(this.state.queryType);
 
         let handler = (menu, response) => {
-            let sportsmanId = `$id=${this.state.sportsman.id}`;
+            let sportsmanId = `id=${this.state.sportsman.id}`;
             let accommodationId, volunteerId;
             let object = response.object;
             let params = "";
@@ -46,16 +46,16 @@ class Sportsman extends React.Component {
             switch (createdGetQuery) {
                 case query.getQueryType.GET_ACCOMMODATION:
                     this.setState({accommodation : object});
-                    accommodationId = `$accommodation_id=${id}`;
-                    volunteerId = `$volunteer_id=${this.state.volunteer.id}`;
+                    accommodationId = `accommodation_id=${id}`;
+                    volunteerId = `volunteer_id=${this.state.volunteer.id}`;
                     params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
                     changedInformation = "accommodation";
                     break;
 
                 case query.getQueryType.GET_VOLUNTEER:
                     this.setState({volunteer : object});
-                    accommodationId = `$accommodation_id=${this.state.accommodation.id}`;
-                    volunteerId = `$volunteer_id=${id}`;
+                    accommodationId = `accommodation_id=${this.state.accommodation.id}`;
+                    volunteerId = `volunteer_id=${id}`;
                     params = `${sportsmanId}&${accommodationId}&${volunteerId}`;
                     changedInformation = "volunteer";
                     break;
@@ -71,11 +71,8 @@ class Sportsman extends React.Component {
                     return;
                 }
 
-                recievedResponse = response.result;
-
                 this.setState({
-                    choosing: false,
-                    changedInformation: recievedResponse
+                    choosing: false
                 });
             };
 
